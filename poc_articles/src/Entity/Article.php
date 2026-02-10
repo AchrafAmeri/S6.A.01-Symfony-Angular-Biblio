@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ArticleRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
 class Article
@@ -12,25 +13,32 @@ class Article
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['article:read', 'categorie:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['article:read', 'categorie:read'])]
     private ?string $titre = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['article:read'])]
     private ?string $contenu = null;
 
     #[ORM\Column]
+    #[Groups(['article:read', 'categorie:read'])]
     private ?bool $publie = false;
 
     #[ORM\Column]
+    #[Groups(['article:read'])]
     private ?\DateTime $date_creation = null;
 
     #[ORM\Column(options: ['default' => 0])]
+    #[Groups(['article:read'])]
     private ?int $numero_ordre = null;
 
     #[ORM\ManyToOne(inversedBy: 'articles')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['article:read'])]
     private ?Categorie $categorie = null;
 
     public function getId(): ?int
