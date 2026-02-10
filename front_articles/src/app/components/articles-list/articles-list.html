@@ -1,0 +1,31 @@
+<div class="container mt-4">
+      <h2>Articles</h2>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Titre</th>
+            <th>Catégorie</th>
+            <th>Publié</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (art of articles(); track art.id) {
+            <tr>
+              <td>{{ art.id }}</td>
+              <td>{{ art.titre }}</td>
+              <td>{{ art.categorie?.libelle }}</td>
+              <td>
+                @if (art.publie) {
+                  <span class="badge bg-success">Oui</span>
+                } @else {
+                  <span class="badge bg-danger">Non</span>
+                }
+              </td>
+              <td>{{ art.date_creation | date: 'dd/MM/yyyy' }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
