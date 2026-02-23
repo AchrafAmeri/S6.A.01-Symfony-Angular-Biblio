@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\CategorieRepository;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+
 
 #[Route('/api')]
 class ArticleController extends AbstractController
@@ -28,6 +30,7 @@ class ArticleController extends AbstractController
         return $this->json($article, 200, [], ['groups' => 'article:read']);
     }
 
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/articles', name: 'api_articles_create', methods: ['POST'])]
     public function create(Request $request, EntityManagerInterface $em, CategorieRepository $categorieRepository): JsonResponse
     {
