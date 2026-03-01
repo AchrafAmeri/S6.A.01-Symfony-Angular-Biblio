@@ -1,10 +1,10 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
-{% block page_title %}Tableau de bord{% endblock %}
+{% block page_title %}Tableau de bord - Bibliothèque{% endblock %}
 
 {% block content_header %}
     <h1 class="title">
-        <i class="fas fa-tachometer-alt"></i> Tableau de bord
+        <i class="fas fa-chart-pie"></i> Statistiques de la bibliothèque
     </h1>
 {% endblock %}
 
@@ -13,36 +13,36 @@
         <div class="col-lg-3 col-md-6">
             <div class="card text-white bg-primary mb-3">
                 <div class="card-body text-center">
-                    <i class="fas fa-tags fa-3x mb-2"></i>
-                    <h2>{{ nbCategories }}</h2>
-                    <p class="card-text">Catégories</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-6">
-            <div class="card text-white bg-success mb-3">
-                <div class="card-body text-center">
-                    <i class="fas fa-newspaper fa-3x mb-2"></i>
-                    <h2>{{ nbArticles }}</h2>
-                    <p class="card-text">Articles</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-6">
-            <div class="card text-white bg-info mb-3">
-                <div class="card-body text-center">
-                    <i class="fas fa-check-circle fa-3x mb-2"></i>
-                    <h2>{{ nbArticlesPublies }}</h2>
-                    <p class="card-text">Articles publiés</p>
+                    <i class="fas fa-book fa-3x mb-2"></i>
+                    <h2>{{ nbLivres }}</h2>
+                    <p class="card-text">Livres au catalogue</p>
                 </div>
             </div>
         </div>
         <div class="col-lg-3 col-md-6">
             <div class="card text-white bg-warning mb-3">
                 <div class="card-body text-center">
+                    <i class="fas fa-hand-holding fa-3x mb-2"></i>
+                    <h2>{{ nbEmpruntsEnCours }}</h2>
+                    <p class="card-text">Emprunts en cours</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-body text-center">
                     <i class="fas fa-users fa-3x mb-2"></i>
-                    <h2>{{ nbUtilisateurs }}</h2>
-                    <p class="card-text">Utilisateurs</p>
+                    <h2>{{ nbAdherents }}</h2>
+                    <p class="card-text">Adhérents inscrits</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="card text-white bg-info mb-3">
+                <div class="card-body text-center">
+                    <i class="fas fa-tags fa-3x mb-2"></i>
+                    <h2>{{ nbCategories }}</h2>
+                    <p class="card-text">Catégories</p>
                 </div>
             </div>
         </div>
@@ -50,16 +50,15 @@
 
     <div class="row mt-4">
         <div class="col-12">
-            <div class="card">
+            <div class="card shadow-sm">
                 <div class="card-body">
-                    <h5 class="card-title">
-                        <i class="fas fa-info-circle"></i> Bienvenue
+                    <h5 class="card-title text-primary">
+                        <i class="fas fa-info-circle"></i> Bienvenue sur l'intranet
                     </h5>
                     <p class="card-text">
-                        Bienvenue sur le tableau de bord de l'application
-                        <strong>POC Articles</strong>.
-                        Utilisez le menu de gauche pour gérer les catégories,
-                        les articles et les utilisateurs.
+                        Bienvenue sur le tableau de bord de gestion de la <strong>Bibliothèque</strong>. 
+                        Utilisez le menu de gauche pour gérer le catalogue de livres, suivre les emprunts en cours, 
+                        gérer les réservations et administrer les comptes des adhérents.
                     </p>
                 </div>
             </div>

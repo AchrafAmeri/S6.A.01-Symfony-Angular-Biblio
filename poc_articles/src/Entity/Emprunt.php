@@ -4,8 +4,10 @@ namespace App\Entity;
 
 use App\Repository\EmpruntRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Validator\EmpruntRules;
 
 #[ORM\Entity(repositoryClass: EmpruntRepository::class)]
+#[EmpruntRules]
 class Emprunt
 {
     #[ORM\Id]
