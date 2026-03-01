@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\EmpruntRepository;
 use Doctrine\ORM\Mapping as ORM;
 use App\Validator\EmpruntRules;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: EmpruntRepository::class)]
 #[EmpruntRules]
@@ -13,12 +14,15 @@ class Emprunt
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['user:read'])]
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Groups(['user:read'])]
     private ?\DateTime $dateEmprunt = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['user:read'])]
     private ?\DateTime $dateRetour = null;
 
     #[ORM\ManyToOne(inversedBy: 'emprunts')]
@@ -27,6 +31,7 @@ class Emprunt
 
     #[ORM\ManyToOne(inversedBy: 'emprunts')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['user:read'])]
     private ?Livre $livre = null;
 
     public function getId(): ?int

@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: LivreRepository::class)]
 class Livre
@@ -14,30 +15,37 @@ class Livre
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['livre:read', 'user:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['livre:read', 'user:read'])]
     private ?string $titre = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    #[Groups(['livre:read'])]
     private ?\DateTime $dateSortie = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups(['livre:read'])]
     private ?string $langue = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['livre:read', 'user:read'])]
     private ?string $photoCouverture = null;
 
     /**
      * @var Collection<int, Auteur>
      */
     #[ORM\ManyToMany(targetEntity: Auteur::class, inversedBy: 'livres')]
+    #[Groups(['livre:read'])]
     private Collection $auteurs;
 
     /**
      * @var Collection<int, Categorie>
      */
     #[ORM\ManyToMany(targetEntity: Categorie::class, inversedBy: 'livres')]
+    #[Groups(['livre:read'])]
     private Collection $categories;
 
     /**
