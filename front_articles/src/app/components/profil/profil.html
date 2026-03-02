@@ -1,0 +1,67 @@
+<div class="container mt-4">
+  <div class="card bg-light mb-4 border-0 shadow-sm">
+    <div class="card-body">
+      <h2>👤 Mon Espace Adhérent</h2>
+      <p class="text-muted">Bienvenue, <strong>{{ authService.userEmail() }}</strong></p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-7">
+      <div class="card shadow-sm h-100">
+        <div class="card-header bg-primary text-white"><h5>Mes Emprunts en cours</h5></div>
+        <div class="card-body">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Livre</th>
+                <th>Date</th>
+                <th>Statut</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (e of emprunts(); track e.id) {
+                <tr>
+                  <td><strong>{{ e.livre.titre }}</strong></td>
+                  <td>{{ e.dateEmprunt | date:'dd/MM/yyyy' }}</td>
+                  <td>
+                    @if (e.dateRetour) {
+                      <span class="badge bg-success">Rendu</span>
+                    } @else {
+                      <span class="badge bg-warning text-dark">En cours</span>
+                    }
+                  </td>
+                </tr>
+              } @empty {
+                <tr><td colspan="3" class="text-center">Aucun emprunt.</td></tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-5">
+      <div class="card shadow-sm h-100">
+        <div class="card-header bg-success text-white"><h5>Mes Réservations</h5></div>
+        <div class="card-body">
+          <ul class="list-group list-group-flush">
+            @for (res of reservations(); track res.id) {
+              <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                <div>
+                  <strong>{{ res.livre.titre }}</strong><br>
+                  <small class="text-muted">Réservé le {{ res.dateResa | date:'dd/MM/yyyy' }}</small>
+                </div>
+                <button class="btn btn-outline-danger btn-sm" (click)="onAnnuler(res.id)">
+                  Annuler
+                </button>
+              </li>
+            } @empty {
+              <p class="text-center mt-3">Aucune réservation en cours.</p>
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

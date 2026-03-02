@@ -19,7 +19,7 @@ class Reservations
 
     #[ORM\Column]
     #[Groups(['user:read'])]
-    private ?\DateTime $dateResa = null;
+    private ?\DateTimeImmutable $dateResa = null;
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
     #[ORM\JoinColumn(nullable: false)]
@@ -35,12 +35,12 @@ class Reservations
         return $this->id;
     }
 
-    public function getDateResa(): ?\DateTime
+    public function getDateResa(): ?\DateTimeImmutable
     {
         return $this->dateResa;
     }
 
-    public function setDateResa(\DateTime $dateResa): static
+    public function setDateResa(\DateTimeImmutable $dateResa): static
     {
         $this->dateResa = $dateResa;
 

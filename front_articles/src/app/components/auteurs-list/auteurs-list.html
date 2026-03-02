@@ -1,0 +1,26 @@
+<div class="container mt-4 mb-5">
+  <h2 class="mb-4">Nos Auteurs</h2>
+  <div class="row g-4">
+    @for (auteur of auteurs(); track auteur.id) {
+      <div class="col-md-4 col-sm-6">
+        <div class="card h-100 shadow-sm text-center border-0">
+          <div class="card-body">
+            @if (auteur.photo) {
+              <img [src]="auteur.photo" class="rounded-circle mb-3 object-fit-cover shadow-sm" style="width: 120px; height: 120px;" alt="Photo de {{ auteur.prenom }}">
+            } @else {
+              <div class="bg-secondary text-white rounded-circle mb-3 mx-auto d-flex align-items-center justify-content-center shadow-sm" style="width: 120px; height: 120px;">
+                <span>Pas de photo</span>
+              </div>
+            }
+            <h5 class="card-title text-primary">{{ auteur.prenom }} {{ auteur.nom }}</h5>
+          </div>
+          <div class="card-footer bg-transparent border-0 pb-4">
+            <a [routerLink]="['/auteurs', auteur.id]" class="btn btn-outline-primary btn-sm px-4">Voir la biographie</a>
+          </div>
+        </div>
+      </div>
+    } @empty {
+      <p>Aucun auteur n'est enregistré pour le moment.</p>
+    }
+  </div>
+</div>

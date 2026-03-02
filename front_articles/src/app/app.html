@@ -1,19 +1,30 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <div class="container">
-    <a class="navbar-brand" routerLink="/">POC Articles</a>
+    <a class="navbar-brand" routerLink="/">Bibliothèque</a>
+    
     <div class="navbar-nav me-auto">
-      <a class="nav-link" routerLink="/categories" routerLinkActive="active">Catégories</a>
-      <a class="nav-link" routerLink="/articles" routerLinkActive="active">Articles</a>
-      @if (authService.isLoggedIn() && authService.isAdmin()) {
-        <a class="nav-link" routerLink="/add-article" routerLinkActive="active">Ajouter</a>
+      <a class="nav-link" routerLink="/livres" routerLinkActive="active">Catalogue</a>
+      <a class="nav-link" routerLink="/auteurs" routerLinkActive="active">Auteurs</a>
+
+      @if (authService.isAdmin()) {
+          <a class="nav-link text-warning fw-bold" routerLink="/admin/dashboard" routerLinkActive="active">Dashboard</a>
+      }
+      
+      @if (authService.isLoggedIn() && !authService.isAdmin()) {
+        <a class="nav-link" routerLink="/profil" routerLinkActive="active">Mon Espace</a>
       }
     </div>
+    
     <div class="navbar-nav">
       @if (authService.isLoggedIn()) {
         <span class="nav-link text-light">{{ authService.userEmail() }}</span>
+        
         @if (authService.isAdmin()) {
           <span class="badge bg-warning text-dark me-2 align-self-center">Admin</span>
+        } @else if (authService.isBiblio()) {
+          <span class="badge bg-info text-dark me-2 align-self-center">Biblio</span>
         }
+        
         <a class="nav-link" style="cursor:pointer" (click)="authService.logout()">Déconnexion</a>
       } @else {
         <a class="nav-link" routerLink="/login" routerLinkActive="active">Connexion</a>

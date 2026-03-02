@@ -48,6 +48,10 @@ export class AuthService {
     return this.userRoles().includes('ROLE_ADMIN');
   }
 
+  isBiblio(): boolean {
+    return this.userRoles().includes('ROLE_BIBLIO') || this.isAdmin();
+  }
+
   private loadUserInfo() {
     this.http.get<any>(`${this.apiUrl}/user/me`).subscribe({
       next: (user) => {

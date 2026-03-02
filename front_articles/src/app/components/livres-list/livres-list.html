@@ -1,0 +1,77 @@
+<div class="container mt-4 mb-5">
+  <h2 class="mb-4">Catalogue de la Bibliothèque</h2>
+
+  <div class="card p-3 mb-4 shadow-sm bg-light border-0">
+    <div class="row g-2">
+      <div class="col-md-4">
+        <input type="text" class="form-control" placeholder="Titre du livre..." 
+               [(ngModel)]="searchTitre" (keyup.enter)="onSearch()">
+      </div>
+      <div class="col-md-3">
+        <input type="text" class="form-control" placeholder="Auteur..." 
+               [(ngModel)]="searchAuteur" (keyup.enter)="onSearch()">
+      </div>
+      <div class="col-md-3">
+        <input type="text" class="form-control" placeholder="Catégorie..." 
+               [(ngModel)]="searchCategorie" (keyup.enter)="onSearch()">
+      </div>
+      <div class="col-md-2">
+        <button class="btn btn-primary w-100" (click)="onSearch()">🔍 Rechercher</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    @for (livre of livres(); track livre.id) {
+      <div class="col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm border-0">
+          <div class="card-body">
+            <h4 class="card-title text-primary">{{ livre.titre }}</h4>
+            <p class="card-text mb-2 text-muted"><small>Langue : {{ livre.langue }}</small></p>
+            
+            <p class="card-text mb-1">
+              <strong>Auteur(s) :</strong> 
+              @for (auteur of livre.auteurs; track auteur.id) {
+                <span class="d-inline-block me-1">✍️ {{ auteur.prenom }} {{ auteur.nom }}</span>
+              }
+            </p>
+
+            <p class="card-text">
+              <strong>Catégorie(s) :</strong>
+              @for (cat of livre.categories; track cat.id) {
+                <span class="badge bg-info text-dark me-1">{{ cat.nom }}</span>
+              }
+            </p>
+          </div>
+          <div class="card-footer bg-transparent border-0 pt-0 pb-3">
+            <a [routerLink]="['/livres', livre.id]" class="btn btn-outline-primary w-100">Voir les détails</a>
+          </div>
+        </div>
+      </div>
+    } @empty {
+      <div class="col-12">
+        <div class="alert alert-warning text-center border-0 shadow-sm">
+          Aucun livre ne correspond à votre recherche.
+        </div>
+      </div>
+    }
+  </div>
+
+  <div class="d-flex justify-content-center mt-5">
+    <ul class="pagination">
+      <li class="page-item" [class.disabled]="page() === 1">
+        <a class="page-link" style="cursor: pointer;" (click)="goToPage(page() - 1)">&laquo;</a>
+      </li>
+      
+      @for (p of pagesArray(); track p) {
+        <li class="page-item" [class.active]="page() === p">
+          <a class="page-link" style="cursor: pointer;" (click)="goToPage(p)">{{ p }}</a>
+        </li>
+      }
+
+      <li class="page-item" [class.disabled]="page() === totalPages()">
+        <a class="page-link" style="cursor: pointer;" (click)="goToPage(page() + 1)">&raquo;</a>
+      </li>
+    </ul>
+  </div>
+</div>

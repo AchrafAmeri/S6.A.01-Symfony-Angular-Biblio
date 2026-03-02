@@ -1,0 +1,68 @@
+<div class="container mt-4">
+  <h2 class="mb-4">Tableau de Bord Administrateur</h2>
+
+  @if (stats(); as s) {
+    <div class="row mb-5">
+      <div class="col-md-4">
+        <div class="card bg-primary text-white shadow-sm border-0">
+          <div class="card-body text-center">
+            <h5 class="card-title">Total Livres</h5>
+            <p class="display-4 fw-bold">{{ s.totals.livres }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card bg-success text-white shadow-sm border-0">
+          <div class="card-body text-center">
+            <h5 class="card-title">Adhérents</h5>
+            <p class="display-4 fw-bold">{{ s.totals.adherents }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card bg-warning text-dark shadow-sm border-0">
+          <div class="card-body text-center">
+            <h5 class="card-title">Emprunts en cours</h5>
+            <p class="display-4 fw-bold">{{ s.totals.empruntsEnCours }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card shadow-sm border-0">
+      <div class="card-header bg-white">
+        <h5 class="mb-0">Activité des 6 derniers mois</h5>
+      </div>
+      <div class="card-body">
+        <table class="table align-middle">
+          <thead>
+            <tr>
+              <th>Mois</th>
+              <th>Nombre d'emprunts</th>
+              <th style="width: 40%">Progression</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of s.history; track item.mois) {
+              <tr>
+                <td><strong>{{ item.mois }}</strong></td>
+                <td>{{ item.total }}</td>
+                <td>
+                  <div class="progress" style="height: 10px;">
+                    <div class="progress-bar" role="progressbar" 
+                         [style.width.%]="(item.total / s.totals.livres) * 100"></div>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  } @else {
+    <div class="text-center p-5">
+      <div class="spinner-border text-primary"></div>
+      <p class="mt-2">Calcul des statistiques...</p>
+    </div>
+  }
+</div>

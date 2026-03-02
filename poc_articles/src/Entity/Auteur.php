@@ -15,15 +15,15 @@ class Auteur
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['livre:read'])]
+    #[Groups(['livre:read', 'auteur:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['livre:read'])]
+    #[Groups(['livre:read', 'auteur:read'])]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['livre:read'])]
+    #[Groups(['livre:read', 'auteur:read'])]
     private ?string $prenom = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
@@ -36,9 +36,11 @@ class Auteur
     private ?string $nationalite = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['livre:read', 'auteur:read'])]
     private ?string $photo = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['livre:read', 'auteur:read'])]
     private ?string $description = null;
 
     /**
