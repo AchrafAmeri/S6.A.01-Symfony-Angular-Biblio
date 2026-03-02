@@ -9,4 +9,6 @@ export interface Livre {
   photoCouverture?: string;
   auteurs: Auteur[];
   categories: Categorie[];
+  isReserve: boolean;
+  isEmprunte: boolean;
 }

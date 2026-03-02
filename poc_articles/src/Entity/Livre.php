@@ -229,6 +229,23 @@ class Livre
         return $this;
     }
 
+    #[Groups(['livre:read'])]
+    public function getIsReserve(): bool
+    {
+        return !$this->reservations->isEmpty();
+    }
+
+    #[Groups(['livre:read'])]
+    public function getIsEmprunte(): bool
+    {
+        foreach ($this->emprunts as $emprunt) {
+            if ($emprunt->getDateRetour() === null) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public function __toString(): string
     {
         return $this->titre ?? 'Livre inconnu';

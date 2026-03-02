@@ -16,44 +16,63 @@
                [(ngModel)]="searchCategorie" (keyup.enter)="onSearch()">
       </div>
       <div class="col-md-2">
-        <button class="btn btn-primary w-100" (click)="onSearch()">🔍 Rechercher</button>
+        <button class="btn btn-primary w-100" (click)="onSearch()">Rechercher</button>
       </div>
     </div>
   </div>
 
   <div class="row g-4">
-    @for (livre of livres(); track livre.id) {
-      <div class="col-md-6 col-lg-4">
-        <div class="card h-100 shadow-sm border-0">
-          <div class="card-body">
-            <h4 class="card-title text-primary">{{ livre.titre }}</h4>
-            <p class="card-text mb-2 text-muted"><small>Langue : {{ livre.langue }}</small></p>
-            
-            <p class="card-text mb-1">
-              <strong>Auteur(s) :</strong> 
-              @for (auteur of livre.auteurs; track auteur.id) {
-                <span class="d-inline-block me-1">✍️ {{ auteur.prenom }} {{ auteur.nom }}</span>
-              }
-            </p>
+    @if (isLoading()) {
+      <div class="col-12 text-center mt-5 mb-5">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+          <span class="visually-hidden">Chargement...</span>
+        </div>
+        <h4 class="mt-3 text-muted">Chargement du catalogue...</h4>
+      </div>
+    } @else {
+      @for (livre of livres(); track livre.id) {
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 shadow-sm border-0">
+            <div class="card-body">
+              <h4 class="card-title text-primary">{{ livre.titre }}</h4>
+              <p class="card-text mb-2 text-muted"><small>Langue : {{ livre.langue }}</small></p>
+              
+              <p class="card-text mb-1">
+                <strong>Auteur(s) :</strong> 
+                @for (auteur of livre.auteurs; track auteur.id) {
+                  <span class="d-inline-block me-1">{{ auteur.prenom }} {{ auteur.nom }}</span>
+                }
+              </p>
 
-            <p class="card-text">
-              <strong>Catégorie(s) :</strong>
-              @for (cat of livre.categories; track cat.id) {
-                <span class="badge bg-info text-dark me-1">{{ cat.nom }}</span>
-              }
-            </p>
-          </div>
-          <div class="card-footer bg-transparent border-0 pt-0 pb-3">
-            <a [routerLink]="['/livres', livre.id]" class="btn btn-outline-primary w-100">Voir les détails</a>
+              <p class="card-text">
+                <strong>Catégorie(s) :</strong>
+                @for (cat of livre.categories; track cat.id) {
+                  <span class="badge bg-info me-1">{{ cat.nom }}</span>
+                }
+              </p>
+
+              <div class="mt-3">
+                @if (livre.isEmprunte) {
+                  <span class="badge bg-danger">Indisponible</span>
+                } @else if (livre.isReserve) {
+                  <span class="badge bg-warning">Réservé</span>
+                } @else {
+                  <span class="badge bg-success">Disponible</span>
+                }
+              </div>
+            </div>
+            <div class="card-footer bg-transparent border-0 pt-0 pb-3">
+              <a [routerLink]="['/livres', livre.id]" class="btn btn-outline-primary w-100">Voir les détails</a>
+            </div>
           </div>
         </div>
-      </div>
-    } @empty {
-      <div class="col-12">
-        <div class="alert alert-warning text-center border-0 shadow-sm">
-          Aucun livre ne correspond à votre recherche.
+      } @empty {
+        <div class="col-12">
+          <div class="alert alert-warning text-center border-0 shadow-sm">
+            Aucun livre ne correspond à votre recherche.
+          </div>
         </div>
-      </div>
+      }
     }
   </div>
 

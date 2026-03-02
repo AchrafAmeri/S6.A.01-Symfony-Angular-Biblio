@@ -14,7 +14,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_BIBLIO')]
 #[AdminDashboard(routePath: '/admin', routeName: 'admin')]
 class DashboardController extends AbstractDashboardController
 {
@@ -24,12 +26,10 @@ class DashboardController extends AbstractDashboardController
 
     public function index(): Response
     {
-        // Calcul des statistiques demandées par le projet
         $nbLivres = $this->em->getRepository(Livre::class)->count([]);
         $nbAdherents = $this->em->getRepository(Utilisateur::class)->count([]);
         $nbCategories = $this->em->getRepository(Categorie::class)->count([]);
         
-        // Un emprunt est "en cours" si la date de retour est nulle
         $nbEmpruntsEnCours = $this->em->getRepository(Emprunt::class)->count(['dateRetour' => null]);
 
         return $this->render('admin/dashboard.html.twig', [
@@ -58,5 +58,11 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::section('Gestion');
         yield MenuItem::linkToCrud('Emprunts', 'fas fa-hand-holding', Emprunt::class);
         yield MenuItem::linkToCrud('Réservations', 'fas fa-calendar-check', Reservations::class);
-        yield MenuItem::linkToCrud('Adhérents', 'fas fa-users', Utilisateur::class)->setPermission('ROLE_ADMIN');    }
+        
+        yield MenuItem::linkToCrud('Adhérents', 'fas fa-users', Utilisateur::class)
+            ->setPermission('ROLE_BIBLIO');
+
+        yield MenuItem::section('Navigation');
+        yield MenuItem::linkToUrl('Retour au site', 'fas fa-arrow-left', 'http://localhost:4200');
+    }
 }

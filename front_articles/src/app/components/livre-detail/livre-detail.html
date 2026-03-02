@@ -38,7 +38,7 @@
             </ul>
 
             <h5>Catégorie(s)</h5>
-            <div class="mb-4">
+            <div class="mb-3">
               @for (cat of l.categories; track cat.id) {
                 <span class="badge bg-info me-2 p-2">{{ cat.nom }}</span>
               } @empty {
@@ -46,12 +46,29 @@
               }
             </div>
 
+            <div class="mb-4">
+              @if (l.isEmprunte) {
+                <span class="badge bg-danger p-2">Actuellement emprunté</span>
+              } @else if (l.isReserve) {
+                <span class="badge bg-warning text-dark p-2">⏳ Déjà réservé</span>
+              } @else {
+                <span class="badge bg-success p-2">Disponible</span>
+              }
+            </div>
+
             <hr class="my-4">
 
             <div class="d-flex gap-2 mt-4">
               @if (authService.isLoggedIn()) {
-                <button class="btn btn-success" (click)="onReserve()">
-                  Réserver ce livre
+                <button 
+                  class="btn btn-success" 
+                  (click)="onReserve()" 
+                  [disabled]="l.isEmprunte || l.isReserve">
+                  @if (l.isEmprunte || l.isReserve) {
+                    Livre indisponible
+                  } @else {
+                    Réserver ce livre
+                  }
                 </button>
               } @else {
                 <a routerLink="/login" class="btn btn-warning">

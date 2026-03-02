@@ -16,6 +16,8 @@ export class LivresList implements OnInit {
   // Données des livres
   livres = signal<Livre[]>([]);
 
+  isLoading = signal(true);
+
   // Signaux pour la recherche
   searchTitre = signal('');
   searchAuteur = signal('');
@@ -34,19 +36,24 @@ export class LivresList implements OnInit {
     this.loadLivres();
   }
 
-  loadLivres() {
-    this.apiService.getLivres(
-      this.searchTitre(), 
-      this.searchAuteur(), 
-      this.searchCategorie(), 
-      this.page()
-    ).subscribe({
-      next: (response) => {
-        // On adapte ici car l'API renvoie maintenant { data: Livre[], totalPages: x, ... }
-        this.livres.set(response.data); 
-        this.totalPages.set(response.totalPages);
-      },
-      error: (err) => console.error('Erreur lors du chargement des livres', err)
+    loadLivres() {
+      this.isLoading.set(true);
+
+      this.apiService.getLivres(
+        this.searchTitre(), 
+        this.searchAuteur(), 
+        this.searchCategorie(), 
+        this.page()
+      ).subscribe({
+        next: (response: any) => {
+          this.livres.set(response.data);
+          this.totalPages.set(response.totalPages);
+          this.isLoading.set(false);
+        },
+        error: (err) => {
+          console.error('Erreur lors du chargement des livres', err);
+          this.isLoading.set(false);
+        }
     });
   }
 

@@ -20,9 +20,9 @@
         <span class="nav-link text-light">{{ authService.userEmail() }}</span>
         
         @if (authService.isAdmin()) {
-          <span class="badge bg-warning text-dark me-2 align-self-center">Admin</span>
+          <span class="badge bg-warning me-2 align-self-center">Admin</span>
         } @else if (authService.isBiblio()) {
-          <span class="badge bg-info text-dark me-2 align-self-center">Biblio</span>
+          <span class="badge bg-info me-2 align-self-center">Biblio</span>
         }
         
         <a class="nav-link" style="cursor:pointer" (click)="authService.logout()">Déconnexion</a>
