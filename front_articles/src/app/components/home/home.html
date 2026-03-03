@@ -1,13 +1,54 @@
-<div class="container mt-4 text-center">
-  <div class="jumbotron py-5 bg-light rounded shadow-sm">
-    <h1 class="display-4">Bienvenue à la Bibliothèque</h1>
-    <p class="lead mt-3">Votre nouvel espace pour explorer, emprunter et réserver vos livres préférés.</p>
-    <hr class="my-4" />
-    <p>Découvrez notre catalogue complet ou connectez-vous pour accéder à votre espace adhérent.</p>
-    
-    <div class="mt-4">
-      <a routerLink="/livres" class="btn btn-primary btn-lg me-3">Voir le catalogue</a>
-      <a routerLink="/login" class="btn btn-outline-secondary btn-lg">Se connecter</a>
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="card border-0 shadow rounded-4 p-4 p-md-5 bg-white">
+        <div class="card-body text-center">
+          <div class="mb-4">
+            <i class="fas fa-book-reader fa-4x text-primary opacity-75"></i>
+          </div>
+
+          <h1 class="display-4 fw-bold text-dark mb-3">Bienvenue à la Bibliothèque</h1>
+          
+          <p class="lead text-muted mb-4 mx-auto" style="max-width: 700px;">
+            Votre espace numérique pour explorer notre collection, gérer vos emprunts et réserver vos prochaines lectures en quelques clics.
+          </p>
+
+          <hr class="my-5 opacity-25">
+
+          <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+            @if (!authService.isLoggedIn()) {
+              <a routerLink="/livres" class="btn btn-primary btn-lg px-5 py-3 shadow-sm fw-bold">
+                <i class="fas fa-search me-2"></i>Voir le catalogue
+              </a>
+              <a routerLink="/login" class="btn btn-outline-dark btn-lg px-5 py-3 fw-bold">
+                <i class="fas fa-user me-2"></i>Se connecter
+              </a>
+            } @else {
+              <a routerLink="/livres" class="btn btn-primary btn-lg px-5 py-3 shadow-sm fw-bold">
+                <i class="fas fa-book me-2"></i>Explorer les livres
+              </a>
+              <a routerLink="/profil" class="btn btn-success btn-lg px-5 py-3 shadow-sm fw-bold">
+                <i class="fas fa-id-card me-2"></i>Mon Espace Adhérent
+              </a>
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-5 g-4 text-center text-muted">
+        <div class="col-4">
+          <div class="fw-bold text-dark h4 mb-0">24/7</div>
+          <small>Accès en ligne</small>
+        </div>
+        <div class="col-4">
+          <div class="fw-bold text-dark h4 mb-0">3 clics</div>
+          <small>Pour réserver</small>
+        </div>
+        <div class="col-4">
+          <div class="fw-bold text-dark h4 mb-0">Simple</div>
+          <small>Gestion d'emprunt</small>
+        </div>
+      </div>
     </div>
   </div>
 </div>

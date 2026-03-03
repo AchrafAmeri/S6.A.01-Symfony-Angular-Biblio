@@ -36,24 +36,24 @@ export class LivresList implements OnInit {
     this.loadLivres();
   }
 
-    loadLivres() {
-      this.isLoading.set(true);
+  loadLivres() {
+    this.isLoading.set(true);
 
-      this.apiService.getLivres(
-        this.searchTitre(), 
-        this.searchAuteur(), 
-        this.searchCategorie(), 
-        this.page()
-      ).subscribe({
-        next: (response: any) => {
-          this.livres.set(response.data);
-          this.totalPages.set(response.totalPages);
-          this.isLoading.set(false);
-        },
-        error: (err) => {
-          console.error('Erreur lors du chargement des livres', err);
-          this.isLoading.set(false);
-        }
+    this.apiService.getLivres(
+      this.searchTitre(), 
+      this.searchAuteur(), 
+      this.searchCategorie(), 
+      this.page()
+    ).subscribe({
+      next: (response: any) => {
+        this.livres.set(response.data);
+        this.totalPages.set(response.totalPages);
+        this.isLoading.set(false);
+      },
+      error: (err) => {
+        console.error('Erreur lors du chargement des livres', err);
+        this.isLoading.set(false);
+      }
     });
   }
 

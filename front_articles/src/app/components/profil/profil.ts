@@ -4,6 +4,7 @@ import { ApiService } from '../../services/api-service';
 import { Emprunt } from '../../models/emprunt';
 import { Reservation } from '../../models/reservation';
 import { DatePipe } from '@angular/common';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-profil',
@@ -17,6 +18,8 @@ export class Profil implements OnInit {
 
   emprunts = signal<Emprunt[]>([]);
   reservations = signal<Reservation[]>([]);
+  
+  isLoading = signal<boolean>(true);
 
   ngOnInit() {
     this.refreshData();
@@ -24,15 +27,31 @@ export class Profil implements OnInit {
 
   refreshData() {
     if (this.authService.isLoggedIn()) {
-      this.apiService.getMesEmprunts().subscribe(data => this.emprunts.set(data));
-      this.apiService.getMesReservations().subscribe(data => this.reservations.set(data));
+      this.isLoading.set(true);
+
+      forkJoin({
+        empruntsData: this.apiService.getMesEmprunts(),
+        reservationsData: this.apiService.getMesReservations()
+      }).subscribe({
+        next: (results) => {
+          this.emprunts.set(results.empruntsData);
+          this.reservations.set(results.reservationsData);
+          this.isLoading.set(false);
+        },
+        error: (err) => {
+          console.error('Error fetching profile data', err);
+          this.isLoading.set(false);
+        }
+      });
+    } else {
+        this.isLoading.set(false);
     }
   }
 
   onAnnuler(id: number) {
     if (confirm('Voulez-vous vraiment annuler cette réservation ?')) {
       this.apiService.annulerReservation(id).subscribe({
-        next: () => this.refreshData(), // On rafraîchit la liste après suppression
+        next: () => this.refreshData(),
         error: (err) => console.error(err)
       });
     }

@@ -11,11 +11,19 @@ import { Auteur } from '../../models/auteur';
 export class AuteursList implements OnInit {
   private apiService = inject(ApiService);
   auteurs = signal<Auteur[]>([]);
+  
+  isLoading = signal(true); 
 
   ngOnInit() {
     this.apiService.getAuteurs().subscribe({
-      next: (data) => this.auteurs.set(data),
-      error: (err) => console.error('Erreur lors du chargement des auteurs', err)
+      next: (data) => {
+        this.auteurs.set(data);
+        this.isLoading.set(false);
+      },
+      error: (err) => {
+        console.error('Erreur lors du chargement des auteurs', err);
+        this.isLoading.set(false);
+      }
     });
   }
 }
