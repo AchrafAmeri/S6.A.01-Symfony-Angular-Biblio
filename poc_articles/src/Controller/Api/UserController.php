@@ -27,7 +27,15 @@ class UserController extends AbstractController
     {
         $user = $this->getUser();
 
+        if (!$user) {
+            return $this->json(['error' => 'Non authentifié.'], 401);
+        }
+
         $data = json_decode($request->getContent(), true);
+
+        if ($data === null) {
+            return $this->json(['error' => 'Données JSON invalides.'], 400);
+        }
 
         if (isset($data['adressePostale'])) {
             $user->setAdressePostale($data['adressePostale']);
