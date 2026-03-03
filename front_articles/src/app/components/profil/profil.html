@@ -14,6 +14,65 @@
       <h4 class="mt-3 text-muted">Récupération de vos informations...</h4>
     </div>
   } @else {
+    <!-- Formulaire d'édition du profil -->
+    @if (user()) {
+      <div class="card shadow-sm mb-4">
+        <div class="card-header bg-info text-white"><h5 class="mb-0">📝 Modifier mon profil</h5></div>
+        <div class="card-body">
+          @if (successMessage) {
+            <div class="alert alert-success">{{ successMessage }}</div>
+          }
+          @if (errorMessageProfil) {
+            <div class="alert alert-danger">{{ errorMessageProfil }}</div>
+          }
+          <form (ngSubmit)="onSaveProfil()">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email"
+                       [value]="user()!.email" disabled>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="nom" class="form-label">Nom</label>
+                <input type="text" class="form-control" id="nom"
+                       [value]="user()!.nom" disabled>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="prenom" class="form-label">Prénom</label>
+                <input type="text" class="form-control" id="prenom"
+                       [value]="user()!.prenom" disabled>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="dateAdhesion" class="form-label">Date d'adhésion</label>
+                <input type="text" class="form-control" id="dateAdhesion"
+                       [value]="user()!.dateAdhesion | date:'dd/MM/yyyy'" disabled>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="dateNaiss" class="form-label">Date de naissance</label>
+                <input type="text" class="form-control" id="dateNaiss"
+                       [value]="user()!.dateNaiss | date:'dd/MM/yyyy'" disabled>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="adressePostale" class="form-label">Adresse postale</label>
+                <input type="text" class="form-control" id="adressePostale"
+                       [(ngModel)]="adressePostale" name="adressePostale">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="numTel" class="form-label">Numéro de téléphone</label>
+                <input type="text" class="form-control" id="numTel"
+                       [(ngModel)]="numTel" name="numTel">
+              </div>
+            </div>
+            <button type="submit" class="btn btn-info text-white">Enregistrer les modifications</button>
+          </form>
+        </div>
+      </div>
+    }
+
     <div class="row">
       <div class="col-md-7 mb-4">
         <div class="card shadow-sm h-100">

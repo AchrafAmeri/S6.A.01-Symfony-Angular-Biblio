@@ -6,6 +6,7 @@ import { Livre } from '../models/livre';
 import { Emprunt } from '../models/emprunt';
 import { Reservation } from '../models/reservation';
 import { Auteur } from '../models/auteur';
+import { Utilisateur } from '../models/utilisateur';
 
 // Interface pour la pagination
 export interface PaginatedLivres {
@@ -65,5 +66,13 @@ export class ApiService {
 
   getStats(): Observable<any> {
     return this.http.get(`${this.apiUrl}/admin/stats`);
+  }
+
+  getMe(): Observable<Utilisateur> {
+    return this.http.get<Utilisateur>(`${this.apiUrl}/user/me`);
+  }
+
+  updateProfile(data: { adressePostale?: string; numTel?: string }): Observable<Utilisateur> {
+    return this.http.put<Utilisateur>(`${this.apiUrl}/user/me`, data);
   }
 }
