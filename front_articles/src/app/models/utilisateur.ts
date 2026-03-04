@@ -4,5 +4,9 @@ export interface Utilisateur {
   roles: string[];
   nom?: string;
   prenom?: string;
+  dateAdhesion?: string;
+  dateNaiss?: string;
+  adressePostale?: string;
+  numTel?: string;
   photo?: string;
 }
