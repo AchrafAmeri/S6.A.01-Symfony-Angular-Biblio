@@ -49,8 +49,10 @@
             <div class="mb-4">
               @if (l.isEmprunte) {
                 <span class="badge bg-danger p-2">Actuellement emprunté</span>
+              } @else if (reserveParMoi()) {
+                <span class="badge bg-success p-2">Réservé par vous</span>
               } @else if (l.isReserve) {
-                <span class="badge bg-warning text-dark p-2">⏳ Déjà réservé</span>
+                <span class="badge bg-warning text-dark p-2">Déjà réservé</span>
               } @else {
                 <span class="badge bg-success p-2">Disponible</span>
               }
@@ -64,11 +66,15 @@
                   class="btn btn-success" 
                   (click)="onReserve()" 
                   [disabled]="l.isEmprunte || l.isReserve">
-                  @if (l.isEmprunte || l.isReserve) {
+                  
+                  @if (reserveParMoi()) {
+                    Déjà réservé par vous
+                  } @else if (l.isEmprunte || l.isReserve) {
                     Livre indisponible
                   } @else {
                     Réserver ce livre
                   }
+                  
                 </button>
               } @else {
                 <a routerLink="/login" class="btn btn-warning">

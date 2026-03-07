@@ -14,9 +14,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted('ROLE_BIBLIO')]
 #[AdminDashboard(routePath: '/admin', routeName: 'admin')]
 class DashboardController extends AbstractDashboardController
 {
@@ -26,10 +24,13 @@ class DashboardController extends AbstractDashboardController
 
     public function index(): Response
     {
+        if (!$this->isGranted('ROLE_BIBLIO')) {
+            return $this->redirectToRoute('sso_to_angular');
+        }
+
         $nbLivres = $this->em->getRepository(Livre::class)->count([]);
         $nbAdherents = $this->em->getRepository(Utilisateur::class)->count([]);
         $nbCategories = $this->em->getRepository(Categorie::class)->count([]);
-        
         $nbEmpruntsEnCours = $this->em->getRepository(Emprunt::class)->count(['dateRetour' => null]);
 
         return $this->render('admin/dashboard.html.twig', [
@@ -63,6 +64,7 @@ class DashboardController extends AbstractDashboardController
             ->setPermission('ROLE_BIBLIO');
 
         yield MenuItem::section('Navigation');
-        yield MenuItem::linkToUrl('Retour au site', 'fas fa-arrow-left', 'http://localhost:4200');
+        // yield MenuItem::linkToUrl('Retour au site', 'fas fa-arrow-left', 'http://localhost:4200');
+        yield MenuItem::linkToUrl('Retour au site public', 'fas fa-globe', $this->generateUrl('sso_to_angular'));
     }
 }

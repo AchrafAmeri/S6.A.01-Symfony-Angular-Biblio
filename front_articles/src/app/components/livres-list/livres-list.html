@@ -39,8 +39,8 @@
               
               <p class="card-text mb-1">
                 <strong>Auteur(s) :</strong> 
-                @for (auteur of livre.auteurs; track auteur.id) {
-                  <span class="d-inline-block me-1">{{ auteur.prenom }} {{ auteur.nom }}</span>
+                @for (auteur of livre.auteurs; track auteur.id; let last = $last) {
+                  <span class="d-inline-block">{{ auteur.prenom }} {{ auteur.nom }}</span>@if (!last) {, }
                 }
               </p>
 

@@ -7,6 +7,7 @@ import { Emprunt } from '../models/emprunt';
 import { Reservation } from '../models/reservation';
 import { Auteur } from '../models/auteur';
 import { Utilisateur } from '../models/utilisateur';
+import { environment } from '../../environments/environment';
 
 // Interface pour la pagination
 export interface PaginatedLivres {
@@ -20,7 +21,7 @@ export interface PaginatedLivres {
 })
 export class ApiService {
   private http = inject(HttpClient);
-  private apiUrl = 'https://127.0.0.1:8008/api';
+  private apiUrl = environment.apiUrl;
 
   getCategories(): Observable<Categorie[]> {
     return this.http.get<Categorie[]>(`${this.apiUrl}/categories`);

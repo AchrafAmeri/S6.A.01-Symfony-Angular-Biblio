@@ -6,12 +6,18 @@
       <a class="nav-link" routerLink="/livres" routerLinkActive="active">Catalogue</a>
       <a class="nav-link" routerLink="/auteurs" routerLinkActive="active">Auteurs</a>
 
-      @if (authService.isAdmin()) {
-          <a class="nav-link text-warning fw-bold" routerLink="/admin/dashboard" routerLinkActive="active">Dashboard</a>
-      }
-      
-      @if (authService.isLoggedIn() && !authService.isAdmin()) {
+      @if (authService.isLoggedIn()) {
         <a class="nav-link" routerLink="/profil" routerLinkActive="active">Mon Espace</a>
+      }
+
+      @if (authService.isLoggedIn() && authService.isBiblio()) {
+        <a class="nav-link text-warning fw-bold" style="cursor: pointer;" (click)="goToAdmin()">
+          Administration
+        </a>
+      }
+
+      @if (authService.isLoggedIn() && authService.isAdmin()) {
+          <a class="nav-link text-warning fw-bold" routerLink="/admin/dashboard" routerLinkActive="active">Dashboard</a>
       }
     </div>
     

@@ -35,6 +35,7 @@ security:
             custom_authenticator: App\Security\AdminAuthenticator
             logout:
                 path: app_logout
+                target: sso_logout_redirect
             remember_me:
                 secret: '%kernel.secret%'
                 lifetime: 604800
@@ -46,4 +47,4 @@ security:
         - { path: ^/api/user/me, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/api, roles: PUBLIC_ACCESS, methods: [GET] }
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
-        - { path: ^/admin, roles: ROLE_BIBLIO }
+        - { path: ^/admin, roles: ROLE_USER }

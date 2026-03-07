@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Fiche d'emprunt #{{ emprunt.id }}</title>
+    <style>
+        body { font-family: 'Helvetica', 'Arial', sans-serif; color: #333; line-height: 1.5; font-size: 14px; }
+        .container { width: 100%; margin: 0 auto; }
+        
+        /* En-tête */
+        .header { text-align: center; border-bottom: 3px solid #0056b3; padding-bottom: 15px; margin-bottom: 30px; }
+        .logo { font-size: 26px; font-weight: bold; color: #0056b3; margin-bottom: 5px; }
+        .subtitle { font-size: 14px; color: #666; }
+        
+        /* Blocs d'informations (Côte à côte) */
+        .row { width: 100%; clear: both; margin-bottom: 30px; }
+        .col-left { float: left; width: 45%; padding: 15px; background-color: #f8f9fa; border-radius: 5px; border: 1px solid #e9ecef; }
+        .col-right { float: right; width: 45%; padding: 15px; background-color: #f8f9fa; border-radius: 5px; border: 1px solid #e9ecef; }
+        
+        h3 { color: #0056b3; margin-top: 0; border-bottom: 1px solid #ddd; padding-bottom: 5px; font-size: 16px; text-transform: uppercase; }
+        
+        /* Tableau central */
+        table.details { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        table.details th, table.details td { padding: 12px; border: 1px solid #ddd; text-align: left; }
+        table.details th { background-color: #f2f2f2; color: #333; width: 40%; }
+        
+        /* Badges de statut */
+        .status { font-weight: bold; padding: 4px 8px; border-radius: 4px; display: inline-block; font-size: 13px; }
+        .status-ok { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .status-warning { background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+        .status-danger { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        
+        /* Pied de page */
+        .footer { margin-top: 50px; text-align: center; }
+        .rules { font-size: 11px; margin-top: 10px; text-align: justify; padding: 15px; background-color: #fff; border: 1px dashed #ccc; color: #555; }
+        .signature { text-align: right; margin-top: 30px; font-weight: bold; padding-right: 30px; }
+        .meta { font-size: 11px; color: #999; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <div class="header">
+            <div class="logo">Library Manager</div>
+            <div class="subtitle">
+                Fiche officielle de suivi d'emprunt<br>
+                <strong>Réf: EMP-{{ '%05d'|format(emprunt.id) }}</strong>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-left">
+                <h3>Adhérent</h3>
+                <strong>Nom :</strong> {{ emprunt.utilisateur.nom|upper }}<br>
+                <strong>Prénom :</strong> {{ emprunt.utilisateur.prenom }}<br>
+                <strong>Email :</strong> {{ emprunt.utilisateur.email }}<br>
+                <strong>Numéro membre :</strong> #{{ '%04d'|format(emprunt.utilisateur.id) }}
+            </div>
+            
+            <div class="col-right">
+                <h3>Ouvrage</h3>
+                <strong>Titre :</strong> {{ emprunt.livre.titre }}<br>
+                <strong>Auteur(s) :</strong> 
+                {% for auteur in emprunt.livre.auteurs %}
+                    {{ auteur.prenom }} {{ auteur.nom }}{% if not loop.last %}, {% endif %}
+                {% else %}
+                    <em>Auteur inconnu</em>
+                {% endfor %}<br>
+                <strong>Langue :</strong> {{ emprunt.livre.langue|default('N/R') }}<br>
+                <strong>Date de parution :</strong> {{ emprunt.livre.dateSortie ? emprunt.livre.dateSortie|date('Y') : 'N/R' }}
+            </div>
+        </div>
+
+        <div style="clear: both;"></div>
+
+        <h3>Détails de la transaction</h3>
+        <table class="details">
+            <tr>
+                <th>Date d'emprunt</th>
+                <td>{{ emprunt.dateEmprunt|date('d/m/Y à H:i') }}</td>
+            </tr>
+            <tr>
+                <th>Date limite de retour (15j)</th>
+                <td><strong>{{ emprunt.dateEmprunt|date_modify('+15 days')|date('d/m/Y') }}</strong></td>
+            </tr>
+            <tr>
+                <th>Date de retour effective</th>
+                <td>
+                    {% if emprunt.dateRetour %}
+                        {{ emprunt.dateRetour|date('d/m/Y à H:i') }}
+                    {% else %}
+                        <em>Ouvrage non restitué à ce jour</em>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>Statut du dossier</th>
+                <td>
+                    {% set dateLimite = emprunt.dateEmprunt|date_modify('+15 days') %}
+                    {% set aujourdhui = date() %}
+                    
+                    {% if emprunt.dateRetour %}
+                        <span class="status status-ok">Clos (Livre restitué)</span>
+                    {% elseif aujourdhui > dateLimite %}
+                        <span class="status status-danger">En retard (Pénalités applicables)</span>
+                    {% else %}
+                        <span class="status status-warning">En cours d'emprunt</span>
+                    {% endif %}
+                </td>
+            </tr>
+        </table>
+
+        <div class="footer">
+            <div class="rules">
+                <strong>Règlement intérieur de la bibliothèque :</strong><br>
+                1. Tout livre emprunté est sous la responsabilité stricte de l'adhérent jusqu'à sa restitution.<br>
+                2. L'ouvrage doit être retourné dans un délai maximum de <strong>15 jours</strong> suivant la date d'emprunt.<br>
+                3. En cas de retard, de dégradation avérée ou de perte de l'ouvrage, des pénalités financières et/ou la suspension du compte de l'adhérent pourront être appliquées, conformément aux conditions générales d'utilisation de Library Manager.
+            </div>
+            
+            <div class="signature">
+                Signature (Cachet de l'établissement) :<br><br><br>
+                _______________________
+            </div>
+
+            <div class="meta">
+                Document certifié généré le {{ 'now'|date('d/m/Y à H:i') }} par Library Manager.
+            </div>
+        </div>
+        
+    </div>
+</body>
+</html>

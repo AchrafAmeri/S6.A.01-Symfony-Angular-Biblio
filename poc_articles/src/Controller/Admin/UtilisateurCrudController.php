@@ -6,12 +6,13 @@ use App\Entity\Utilisateur;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_BIBLIO')]
 class UtilisateurCrudController extends AbstractCrudController
 {
     private UserPasswordHasherInterface $passwordHasher;
@@ -47,9 +48,6 @@ class UtilisateurCrudController extends AbstractCrudController
                 ])
                 ->allowMultipleChoices()
                 ->renderExpanded(),
-                
-            // Ajout du bouton pour suspendre un adhérent (nécessite un booléen 'isActif' dans l'entité)
-            // BooleanField::new('isActif', 'Compte Actif'), 
         ];
     }
 

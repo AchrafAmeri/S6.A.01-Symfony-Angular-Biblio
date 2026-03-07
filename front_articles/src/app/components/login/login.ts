@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth-service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +23,13 @@ export class Login {
     this.authService.login(this.email, this.password).subscribe({
       next: (response) => {
         this.authService.handleLoginSuccess(response.token);
-        this.router.navigate(['/']);
+
+        if (this.authService.isBiblio()) {
+          // On passe par le pont SSO en fournissant le token
+          window.location.href = `${environment.ssoUrl}?token=${response.token}`;
+        } else {
+          this.router.navigate(['/']);
+        }
       },
       error: () => {
         this.errorMessage = 'Email ou mot de passe incorrect.';

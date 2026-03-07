@@ -1,6 +1,7 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,7 @@ import { Router } from '@angular/router';
 export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
-  private apiUrl = 'https://127.0.0.1:8008/api';
+  private apiUrl = environment.apiUrl;
 
   isLoggedIn = signal(false);
   userEmail = signal('');
@@ -29,15 +30,29 @@ export class AuthService {
   handleLoginSuccess(token: string) {
     localStorage.setItem('jwt_token', token);
     this.isLoggedIn.set(true);
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      if (payload.roles) {
+        this.userRoles.set(payload.roles);
+      }
+    } catch (e) {
+      console.error('Erreur de lecture du token');
+    }
+
     this.loadUserInfo();
   }
 
-  logout() {
+  localLogout() {
     localStorage.removeItem('jwt_token');
     this.isLoggedIn.set(false);
     this.userEmail.set('');
     this.userRoles.set([]);
-    this.router.navigate(['/']);
+  }
+
+  logout() {
+    this.localLogout();
+    window.location.href = environment.logoutUrl;
   }
 
   getToken(): string | null {

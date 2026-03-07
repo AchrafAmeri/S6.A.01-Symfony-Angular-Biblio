@@ -18,14 +18,17 @@ export class LivreDetail implements OnInit {
 
   livre = signal<Livre | undefined>(undefined);
   message = signal<{ text: string, type: string } | null>(null);
+  
+  reserveParMoi = signal<boolean>(false);
 
   ngOnInit() {
-    // Récupération de l'ID depuis l'URL
     const id = Number(this.route.snapshot.paramMap.get('id'));
     
     if (id) {
       this.apiService.getLivre(id).subscribe({
-        next: (data) => this.livre.set(data),
+        next: (data) => {
+          this.livre.set(data);
+        },
         error: (err) => console.error('Erreur lors du chargement du livre', err)
       });
     }
@@ -37,6 +40,10 @@ export class LivreDetail implements OnInit {
     this.apiService.reserveLivre(this.livre()!.id).subscribe({
       next: (res) => {
         this.message.set({ text: res.message, type: 'success' });
+        
+        this.livre.update(l => l ? { ...l, isReserve: true } : l);
+        
+        this.reserveParMoi.set(true);
       },
       error: (err) => {
         const errorMsg = err.error?.message || 'Une erreur est survenue.';

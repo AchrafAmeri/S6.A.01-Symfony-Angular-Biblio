@@ -86,4 +86,21 @@ class Emprunt
 
         return $this;
     }
+
+    public function getIsEnRetard(): bool
+    {
+        $dateLimite = (clone $this->dateEmprunt)->modify('+15 days');
+
+        if ($this->dateRetour !== null) {
+            return $this->dateRetour > $dateLimite;
+        }
+
+        $aujourdhui = new \DateTime();
+        return $aujourdhui > $dateLimite;
+    }
+
+    public function getRetardAffichage(): string
+    {
+        return $this->getIsEnRetard() ? 'Oui' : 'Non';
+    }
 }
