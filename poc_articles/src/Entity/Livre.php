@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: LivreRepository::class)]
 class Livre
@@ -31,7 +32,9 @@ class Livre
     private ?string $langue = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['livre:read', 'user:read'])]
+    #[Assert\Url(
+        message: 'L\'URL "{{ value }}" n\'est pas valide. Vérifiez qu\'elle commence bien par http:// ou https://'
+    )]
     private ?string $photoCouverture = null;
 
     /**

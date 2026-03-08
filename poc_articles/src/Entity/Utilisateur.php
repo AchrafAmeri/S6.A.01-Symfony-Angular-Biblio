@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
@@ -23,6 +24,11 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 180)]
     #[Groups(['user:read'])]
+    #[Assert\NotBlank(message: 'L\'adresse email est obligatoire.')]
+    #[Assert\Email(
+        message: 'L\'email "{{ value }}" n\'est pas valide. Il doit être au format nom@domaine.com.',
+        mode: 'strict'
+    )]
     private ?string $email = null;
 
     /**
@@ -38,20 +44,34 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\Column(length: 100, nullable: true)]
+    #[ORM\Column(length: 100)]
     #[Groups(['user:read'])]
+    #[Assert\NotBlank(message: 'Le nom est obligatoire.')]
+    #[Assert\Length(
+        min: 2,
+        max: 100,
+        minMessage: 'Le nom doit contenir au moins {{ limit }} caractères.'
+    )]
     private ?string $nom = null;
 
-    #[ORM\Column(length: 100, nullable: true)]
+    #[ORM\Column(length: 100)]
     #[Groups(['user:read'])]
+    #[Assert\NotBlank(message: 'Le prénom est obligatoire.')]
+    #[Assert\Length(
+        min: 2,
+        max: 100,
+        minMessage: 'Le prénom doit contenir au moins {{ limit }} caractères.'
+    )]
     private ?string $prenom = null;
 
     #[ORM\Column]
     #[Groups(['user:read'])]
+    #[Assert\NotNull(message: 'La date d\'adhésion doit être définie.')]
     private ?\DateTime $dateAdhesion = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     #[Groups(['user:read'])]
+    #[Assert\LessThan('today', message: 'La date de naissance doit être dans le passé.')]
     private ?\DateTime $dateNaiss = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -60,6 +80,11 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 20, nullable: true)]
     #[Groups(['user:read'])]
+    #[Assert\Regex(
+        // On a ajouté \s? juste avant le [1-9]
+        pattern: '/^(\+33|0)\s?[1-9](\s?\d{2}){4}$/',
+        message: 'Le format du numéro de téléphone est invalide (ex: 0612345678, +33612345678 ou +33 6 12 34 56 78).'
+    )]
     private ?string $numTel = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -143,7 +168,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->password;
     }
 
-    public function setPassword(string $password): static
+    public function setPassword(?string $password): static
     {
         $this->password = $password;
 

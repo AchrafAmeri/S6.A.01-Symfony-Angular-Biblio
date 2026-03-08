@@ -12,6 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -66,5 +67,29 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::section('Navigation');
         // yield MenuItem::linkToUrl('Retour au site', 'fas fa-arrow-left', 'http://localhost:4200');
         yield MenuItem::linkToUrl('Retour au site public', 'fas fa-globe', $this->generateUrl('sso_to_angular'));
+    }
+
+    public function configureAssets(): Assets
+    {
+        return Assets::new()
+            // On force le contenu de la liste à faire 250px maximum et on active le scroll
+            ->addHtmlContentToHead('<style>
+                .ts-dropdown .ts-dropdown-content {
+                    max-height: 250px !important;
+                    overflow-y: auto !important;
+                }
+            </style>')
+            
+            ->addHtmlContentToBody('
+                <datalist id="liste-langues">
+                    <option value="Français"></option>
+                    <option value="Anglais"></option>
+                    <option value="Espagnol"></option>
+                    <option value="Allemand"></option>
+                    <option value="Italien"></option>
+                    <option value="Japonais"></option>
+                    <option value="Arabe"></option>
+                </datalist>
+            ');
     }
 }
