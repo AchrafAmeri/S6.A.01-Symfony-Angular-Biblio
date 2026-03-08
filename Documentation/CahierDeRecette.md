@@ -9,7 +9,7 @@
 |---------------|-----------|
 | **Projet** | Système de Gestion de Bibliothèque |
 | **Auteur** | Équipe Projet SAE S6.A.01 |
-| **Technologies** | Symfony 7.4.1, Angular, API Platform,
+| **Technologies** | Symfony 7.4.1, Angular, API Platform, JWT Auth |
 
 ---
 
@@ -88,53 +88,6 @@
 | 26 | Requête API protégée sans authentification | Aucun token | Envoyer GET `/api/user/me` sans header Authorization | HTTP 401 Unauthorized, message "JWT Token not found" ou équivalent | - |
 
 ---
-
-## 4. Synthèse des Résultats
-
-À compléter après l'exécution des tests.
-
-| **Catégorie** | **Nb Tests** | **OK** | **KO** | **Taux** |
-|--------------|-------------|--------|--------|----------|
-| Front-Office Public | 5 | | | % |
-| Front-Office Adhérent | 6 | | | % |
-| Back-Office Bibliothécaire | 6 | | | % |
-| Back-Office Responsable | 6 | | | % |
-| API REST | 3 | | | % |
-| **TOTAL** | **26** | | | **%** |
-
----
-
-## 5. Anomalies et Non-Conformités
-
-| **ID** | **Sévérité** | **Test #** | **Description** | **Statut** |
-|--------|-------------|-----------|----------------|-----------|
-| | | | | |
-
-**Légende :**
-- **Bloquante** : empêche l'utilisation de la fonctionnalité
-- **Majeure** : impact significatif sur l'expérience utilisateur
-- **Mineure** : impact limité, contournement possible
-
----
-
-## 6. Recommandations
-
-### 6.1 Améliorations Suggérées
-
-1. **Tests automatisés** : Mettre en place des tests unitaires (PHPUnit) et fonctionnels (Behat/Codeception)
-2. **Documentation API** : Générer une documentation OpenAPI/Swagger pour l'API REST
-3. **Monitoring** : Ajouter des logs applicatifs (Monolog) et monitoring (New Relic, Sentry)
-4. **Performance** : Mettre en cache les requêtes fréquentes (Redis, Symfony Cache)
-5. **Sécurité** : Implémenter un rate limiting pour les endpoints sensibles
-
-### 6.2 Points de Vigilance
-
-- **Gestion des erreurs** : S'assurer que toutes les erreurs API sont correctement formatées
-- **Validation des données** : Ajouter des contraintes de validation Symfony sur toutes les entités
-- **RGPD** : Implémenter une fonctionnalité d'export/suppression des données personnelles
-
----
-
 
 
 **Fin du Cahier de Recette**
