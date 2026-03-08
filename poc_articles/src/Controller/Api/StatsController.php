@@ -17,7 +17,7 @@ class StatsController extends AbstractController
 {
     #[Route('', name: 'api_admin_stats', methods: ['GET'])]
     public function getStats(
-        LivreRepository $livreRepo, 
+        LivreRepository $livreRepo,
         EmpruntRepository $empRepo,
         UtilisateurRepository $adhRepo
     ): JsonResponse {

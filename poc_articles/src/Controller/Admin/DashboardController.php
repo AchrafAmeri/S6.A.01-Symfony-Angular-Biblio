@@ -10,6 +10,7 @@ use App\Entity\Reservations;
 use App\Entity\Utilisateur;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -47,6 +48,12 @@ class DashboardController extends AbstractDashboardController
             ->setTitle('Gestion Bibliothèque');
     }
 
+    public function configureAssets(): Assets
+    {
+        return Assets::new()
+            ->addCssFile('styles/admin.css?v=20260308');
+    }
+
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Tableau de bord', 'fa fa-home');
@@ -59,7 +66,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::section('Gestion');
         yield MenuItem::linkToCrud('Emprunts', 'fas fa-hand-holding', Emprunt::class);
         yield MenuItem::linkToCrud('Réservations', 'fas fa-calendar-check', Reservations::class);
-        
+
         yield MenuItem::linkToCrud('Adhérents', 'fas fa-users', Utilisateur::class)
             ->setPermission('ROLE_BIBLIO');
 

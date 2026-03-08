@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <div class="container">
     <a class="navbar-brand" routerLink="/">Bibliothèque</a>
-    
+
     <div class="navbar-nav me-auto">
       <a class="nav-link" routerLink="/livres" routerLinkActive="active">Catalogue</a>
       <a class="nav-link" routerLink="/auteurs" routerLinkActive="active">Auteurs</a>
@@ -12,25 +12,27 @@
 
       @if (authService.isLoggedIn() && authService.isBiblio()) {
         <a class="nav-link text-warning fw-bold" style="cursor: pointer;" (click)="goToAdmin()">
-          Administration
+          Gestion
         </a>
       }
 
       @if (authService.isLoggedIn() && authService.isAdmin()) {
-          <a class="nav-link text-warning fw-bold" routerLink="/admin/dashboard" routerLinkActive="active">Dashboard</a>
+          <a class="nav-link text-success fw-bold" style="cursor: pointer;" (click)="goToStats()">
+            Statistiques
+          </a>
       }
     </div>
-    
+
     <div class="navbar-nav">
       @if (authService.isLoggedIn()) {
         <span class="nav-link text-light">{{ authService.userEmail() }}</span>
-        
+
         @if (authService.isAdmin()) {
           <span class="badge bg-warning me-2 align-self-center">Admin</span>
         } @else if (authService.isBiblio()) {
           <span class="badge bg-info me-2 align-self-center">Biblio</span>
         }
-        
+
         <a class="nav-link" style="cursor:pointer" (click)="authService.logout()">Déconnexion</a>
       } @else {
         <a class="nav-link" routerLink="/login" routerLinkActive="active">Connexion</a>

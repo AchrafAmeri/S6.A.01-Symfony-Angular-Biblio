@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterOutlet, RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { AuthService } from './services/auth-service';
 import { environment } from '../environments/environment';
 
@@ -11,6 +11,7 @@ import { environment } from '../environments/environment';
 })
 export class App {
   authService = inject(AuthService);
+  private router = inject(Router);
 
   constructor() {
     // On regarde s'il y a un token dans l'URL (envoyé par le pont Symfony)
@@ -21,7 +22,7 @@ export class App {
     if (ssoToken) {
       // On connecte l'utilisateur silencieusement avec ce nouveau token
       this.authService.handleLoginSuccess(ssoToken);
-      
+
       // On nettoie l'URL pour cacher le token et faire plus propre visuellement
       window.history.replaceState({}, document.title, window.location.pathname);
     }else if (action === 'logout') {
@@ -31,12 +32,16 @@ export class App {
   }
 
   goToAdmin() {
-    // On récupère le token actuel pour le transmettre à Symfony
+    // Bibliothécaire → Interface EasyAdmin Symfony (gestion quotidienne)
+    // Responsable → Peut aussi y accéder (hérite des droits)
     const token = this.authService.getToken();
-    
     if (token) {
-      // On utilise l'URL dynamique de l'environnement
       window.location.href = `${environment.ssoUrl}?token=${token}`;
     }
+  }
+
+  goToStats() {
+    // Responsable uniquement → Dashboard Angular avec statistiques détaillées
+    this.router.navigate(['/admin/dashboard']);
   }
 }

@@ -17,12 +17,13 @@ class SsoController extends AbstractController
     #[Route('/sso/to-symfony', name: 'sso_to_symfony')]
     public function toSymfony(Request $request, JWTEncoderInterface $jwtEncoder, EntityManagerInterface $em, Security $security): Response
     {
+        $frontUrl = rtrim((string) $this->getParameter('app.angular_front_url'), '/');
         $token = $request->query->get('token');
         if ($token) {
             try {
                 $payload = $jwtEncoder->decode($token);
                 $email = $payload['username'] ?? $payload['email'] ?? null;
-                
+
                 if ($email) {
                     $user = $em->getRepository(Utilisateur::class)->findOneBy(['email' => $email]);
                     if ($user) {
@@ -31,11 +32,10 @@ class SsoController extends AbstractController
                     }
                 }
             } catch (\Exception $e) {
-                // S'il y a la moindre erreur, elle s'affichera à l'écran au lieu de te renvoyer au login
-                dd('Erreur SSO : ' . $e->getMessage()); 
+                return $this->redirect($frontUrl . '/login?sso=invalid_token');
             }
         }
-        return $this->redirectToRoute('app_login'); 
+        return $this->redirect($frontUrl . '/login?sso=failed');
     }
 
     #[Route('/sso/to-angular', name: 'sso_to_angular')]
@@ -44,10 +44,10 @@ class SsoController extends AbstractController
         $user = $security->getUser();
 
         $frontUrl = $this->getParameter('app.angular_front_url');
-        
+
         if ($user) {
             $token = $jwtManager->create($user);
-            
+
             // On le redirige vers le front Angular avec le token dans l'URL
             return $this->redirect($frontUrl . '/?token=' . $token);
         }
@@ -60,7 +60,7 @@ class SsoController extends AbstractController
     {
         // On récupère l'URL d'Angular depuis les paramètres
         $frontUrl = $this->getParameter('app.angular_front_url');
-        
+
         // On redirige proprement vers le front-office
         return $this->redirect($frontUrl . '/?action=logout');
     }

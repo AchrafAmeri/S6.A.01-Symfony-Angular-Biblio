@@ -3,7 +3,7 @@ import { Home } from './components/home/home';
 import { LivresList } from './components/livres-list/livres-list';
 import { Profil } from './components/profil/profil';
 import { Login } from './components/login/login';
-import { authGuard } from './guards/auth-guard';
+import { authGuard, adminGuard } from './guards/auth-guard';
 import { CategoriesList } from './components/categories-list/categories-list';
 import { LivreDetail } from './components/livre-detail/livre-detail';
 import { AuteursList } from './components/auteurs-list/auteurs-list';
@@ -17,7 +17,7 @@ export const routes: Routes = [
   { path: 'auteurs', component: AuteursList },
   { path: 'auteurs/:id', component: AuteurDetail },
   { path: 'categories', component: CategoriesList },
-  { path: 'admin/dashboard', component: AdminDashboard, canActivate: [authGuard] },
+  { path: 'admin/dashboard', component: AdminDashboard, canActivate: [adminGuard] },
   { path: 'profil', component: Profil, canActivate: [authGuard] },
   { path: 'login', component: Login }
 ];

@@ -9,9 +9,10 @@
 {% endblock %}
 
 {% block main %}
-    <div class="row">
+    <div class="ea-custom-dashboard">
+    <div class="row dashboard-cards-row">
         <div class="col-lg-3 col-md-6">
-            <div class="card text-white bg-primary mb-3">
+            <div class="card dashboard-stat-card text-white bg-primary mb-3">
                 <div class="card-body text-center">
                     <i class="fas fa-book fa-3x mb-2"></i>
                     <h2>{{ nbLivres }}</h2>
@@ -20,7 +21,7 @@
             </div>
         </div>
         <div class="col-lg-3 col-md-6">
-            <div class="card text-white bg-warning mb-3">
+            <div class="card dashboard-stat-card text-white bg-warning mb-3">
                 <div class="card-body text-center">
                     <i class="fas fa-hand-holding fa-3x mb-2"></i>
                     <h2>{{ nbEmpruntsEnCours }}</h2>
@@ -29,7 +30,7 @@
             </div>
         </div>
         <div class="col-lg-3 col-md-6">
-            <div class="card text-white bg-success mb-3">
+            <div class="card dashboard-stat-card text-white bg-success mb-3">
                 <div class="card-body text-center">
                     <i class="fas fa-users fa-3x mb-2"></i>
                     <h2>{{ nbAdherents }}</h2>
@@ -38,7 +39,7 @@
             </div>
         </div>
         <div class="col-lg-3 col-md-6">
-            <div class="card text-white bg-info mb-3">
+            <div class="card dashboard-stat-card text-white bg-info mb-3">
                 <div class="card-body text-center">
                     <i class="fas fa-tags fa-3x mb-2"></i>
                     <h2>{{ nbCategories }}</h2>
@@ -50,18 +51,19 @@
 
     <div class="row mt-4">
         <div class="col-12">
-            <div class="card shadow-sm">
+            <div class="card dashboard-info-card shadow-sm">
                 <div class="card-body">
                     <h5 class="card-title text-primary">
                         <i class="fas fa-info-circle"></i> Bienvenue sur l'intranet
                     </h5>
                     <p class="card-text">
-                        Bienvenue sur le tableau de bord de gestion de la <strong>Bibliothèque</strong>. 
-                        Utilisez le menu de gauche pour gérer le catalogue de livres, suivre les emprunts en cours, 
+                        Bienvenue sur le tableau de bord de gestion de la <strong>Bibliothèque</strong>.
+                        Utilisez le menu de gauche pour gérer le catalogue de livres, suivre les emprunts en cours,
                         gérer les réservations et administrer les comptes des adhérents.
                     </p>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 {% endblock %}

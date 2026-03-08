@@ -1,8 +1,8 @@
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8008/api',
-  ssoUrl: 'http://localhost:8008/sso/to-symfony',
-  logoutUrl: 'http://localhost:8008/logout',
+  apiUrl: 'https://127.0.0.1:8008/api',
+  ssoUrl: 'https://127.0.0.1:8008/sso/to-symfony',
+  logoutUrl: 'https://127.0.0.1:8008/logout',
   frontUrl: 'http://localhost:4200'
 };
 
