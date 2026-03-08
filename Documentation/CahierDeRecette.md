@@ -89,5 +89,89 @@
 
 ---
 
+## 4. Captures Lisibles (Grand Format)
+
+Les captures ci-dessous sont affichées hors tableau pour améliorer la lisibilité dans la preview et dans l'export PDF.
+
+### Test 1
+![test-1](captures/test-1.png)
+![test-1-2](captures/test-1-2.png)
+
+### Test 2
+![test-2](captures/test-2.png)
+
+### Test 3
+![test-3](captures/test-3.png)
+
+### Test 4
+![test-4](captures/test-4.png)
+
+### Test 5
+![test-5](captures/test-5.png)
+
+### Test 6
+![test-6](captures/test-6.png)
+
+### Test 7
+![test-7](captures/test-7.png)
+
+### Test 8 (meme capture que Test 6)
+![test-6](captures/test-6.png)
+
+### Test 9 (meme capture que Test 6)
+![test-6](captures/test-6.png)
+
+### Test 10
+![test-10](captures/test-10.png)
+
+### Test 11
+![test-11](captures/test-11.png)
+
+### Test 12
+![test-12](captures/test-12.png)
+
+### Test 13
+![test-13](captures/test-13.png)
+
+### Test 14
+![test-14](captures/test-14.png)
+
+### Test 15 (meme capture que Test 13)
+![test-13](captures/test-13.png)
+
+### Test 16
+![test-16](captures/test-16.png)
+
+### Test 17
+![test-17](captures/test-17.png)
+
+### Test 18
+![test-18](captures/test-18.png)
+
+### Test 19
+![test-19](captures/test-19.png)
+
+### Test 20
+![test-20](captures/test-20.png)
+
+### Test 21
+![test-21](captures/test-21.png)
+
+### Test 22
+![test-22](captures/test-22.png)
+
+### Test 23
+![test-23](captures/test-23.png)
+
+### Test 24
+![test-24](captures/test-24.png)
+
+### Test 25
+![test-25](captures/test-25.png)
+
+### Test 26
+![test-26](captures/test-26.png)
+
+
 
 **Fin du Cahier de Recette**
