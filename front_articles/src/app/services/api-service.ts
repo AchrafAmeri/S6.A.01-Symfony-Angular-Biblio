@@ -16,6 +16,12 @@ export interface PaginatedLivres {
   currentPage: number;
 }
 
+export interface PaginatedAuteurs {
+  data: Auteur[];
+  totalPages: number;
+  currentPage: number;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -29,7 +35,7 @@ export class ApiService {
 
   getLivres(titre: string = '', auteur: string = '', categorie: string = '', page: number = 1): Observable<PaginatedLivres> {
     let params = new HttpParams().set('page', page.toString());
-    
+
     if (titre) params = params.set('titre', titre);
     if (auteur) params = params.set('auteur', auteur);
     if (categorie) params = params.set('categorie', categorie);
@@ -49,8 +55,12 @@ export class ApiService {
     return this.http.get<Reservation[]>(`${this.apiUrl}/mes-reservations`);
   }
 
-  getAuteurs(): Observable<Auteur[]> {
-    return this.http.get<Auteur[]>(`${this.apiUrl}/auteurs`);
+  getAuteurs(nom: string = '', page: number = 1): Observable<PaginatedAuteurs> {
+    let params = new HttpParams().set('page', page.toString());
+
+    if (nom) params = params.set('nom', nom);
+
+    return this.http.get<PaginatedAuteurs>(`${this.apiUrl}/auteurs`, { params });
   }
 
   getAuteur(id: number): Observable<Auteur> {
