@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth-service';
@@ -16,23 +16,24 @@ export class Login {
 
   email = '';
   password = '';
-  errorMessage = '';
+  
+  errorMessage = signal(''); 
 
   onSubmit() {
-    this.errorMessage = '';
+    this.errorMessage.set(''); 
+    
     this.authService.login(this.email, this.password).subscribe({
       next: (response) => {
         this.authService.handleLoginSuccess(response.token);
 
         if (this.authService.isBiblio()) {
-          // On passe par le pont SSO en fournissant le token
           window.location.href = `${environment.ssoUrl}?token=${response.token}`;
         } else {
           this.router.navigate(['/']);
         }
       },
       error: () => {
-        this.errorMessage = 'Email ou mot de passe incorrect.';
+        this.errorMessage.set('Email ou mot de passe incorrect.');
       }
     });
   }
