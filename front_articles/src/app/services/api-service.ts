@@ -83,7 +83,7 @@ export class ApiService {
     return this.http.get<Utilisateur>(`${this.apiUrl}/user/me`);
   }
 
-  updateProfile(data: { adressePostale?: string; numTel?: string }): Observable<Utilisateur> {
+  updateProfile(data: { email?: string; adressePostale?: string; numTel?: string }) {
     return this.http.put<Utilisateur>(`${this.apiUrl}/user/me`, data);
   }
 }

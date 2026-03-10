@@ -25,16 +25,23 @@ class SsoController extends AbstractController
                 
                 if ($email) {
                     $user = $em->getRepository(Utilisateur::class)->findOneBy(['email' => $email]);
+                    
                     if ($user) {
                         $security->login($user, \App\Security\AdminAuthenticator::class, 'main');
-                        return $this->redirectToRoute('admin');
+                        
+                        if ($security->isGranted('ROLE_BIBLIO')) {
+                            return $this->redirectToRoute('admin');
+                        }
+                        
+                        $frontUrl = $this->getParameter('app.angular_front_url');
+                        return $this->redirect($frontUrl);
                     }
                 }
             } catch (\Exception $e) {
-                // S'il y a la moindre erreur, elle s'affichera à l'écran au lieu de te renvoyer au login
                 dd('Erreur SSO : ' . $e->getMessage()); 
             }
         }
+        
         return $this->redirectToRoute('app_login'); 
     }
 
@@ -48,7 +55,6 @@ class SsoController extends AbstractController
         if ($user) {
             $token = $jwtManager->create($user);
             
-            // On le redirige vers le front Angular avec le token dans l'URL
             return $this->redirect($frontUrl . '/?token=' . $token);
         }
 
@@ -58,10 +64,9 @@ class SsoController extends AbstractController
     #[Route('/sso/logout-redirect', name: 'sso_logout_redirect')]
     public function logoutRedirect(): Response
     {
-        // On récupère l'URL d'Angular depuis les paramètres
         $frontUrl = $this->getParameter('app.angular_front_url');
         
-        // On redirige proprement vers le front-office
+        // redirection propre vers le front-office
         return $this->redirect($frontUrl . '/?action=logout');
     }
 }

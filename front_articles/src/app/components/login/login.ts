@@ -25,12 +25,7 @@ export class Login {
     this.authService.login(this.email, this.password).subscribe({
       next: (response) => {
         this.authService.handleLoginSuccess(response.token);
-
-        if (this.authService.isBiblio()) {
-          window.location.href = `${environment.ssoUrl}?token=${response.token}`;
-        } else {
-          this.router.navigate(['/']);
-        }
+        window.location.href = `${environment.ssoUrl}?token=${response.token}`;
       },
       error: () => {
         this.errorMessage.set('Email ou mot de passe incorrect.');

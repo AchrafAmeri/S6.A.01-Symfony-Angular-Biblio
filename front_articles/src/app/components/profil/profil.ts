@@ -22,10 +22,12 @@ export class Profil implements OnInit {
   reservations = signal<Reservation[]>([]);
   user = signal<Utilisateur | null>(null);
 
+  email = '';
   adressePostale = '';
   numTel = '';
-  successMessage = '';
-  errorMessageProfil = '';
+  
+  successMessage = signal('');
+  errorMessageProfil = signal('');
 
   isLoading = signal<boolean>(true);
 
@@ -46,8 +48,11 @@ export class Profil implements OnInit {
           this.emprunts.set(results.empruntsData);
           this.reservations.set(results.reservationsData);
           this.user.set(results.userData);
+          
+          this.email = results.userData.email || ''; 
           this.adressePostale = results.userData.adressePostale || '';
           this.numTel = results.userData.numTel || '';
+          
           this.isLoading.set(false);
         },
         error: (err) => {
@@ -61,19 +66,32 @@ export class Profil implements OnInit {
   }
 
   onSaveProfil() {
-    this.successMessage = '';
-    this.errorMessageProfil = '';
+    this.successMessage.set('');
+    this.errorMessageProfil.set('');
+    
+    const emailChanged = this.email !== this.user()?.email;
+
     this.apiService.updateProfile({
+      email: this.email,
       adressePostale: this.adressePostale,
       numTel: this.numTel
     }).subscribe({
       next: (updatedUser) => {
-        this.user.set(updatedUser);
-        this.successMessage = 'Profil mis à jour avec succès.';
+        if (emailChanged) {
+          alert('Votre email a été modifié. Veuillez vous reconnecter avec vos nouveaux identifiants.');
+          this.authService.logout();
+        } else {
+          this.user.set(updatedUser);
+          this.successMessage.set('Profil mis à jour avec succès.');
+        }
       },
       error: (err) => {
         console.error('Error updating profile', err);
-        this.errorMessageProfil = 'Erreur lors de la mise à jour du profil.';
+        if (err.status === 409) {
+            this.errorMessageProfil.set('Cet email est déjà utilisé par un autre compte.');
+        } else {
+            this.errorMessageProfil.set('Erreur lors de la mise à jour du profil.');
+        }
       }
     });
   }

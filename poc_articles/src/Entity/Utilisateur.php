@@ -81,7 +81,6 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 20, nullable: true)]
     #[Groups(['user:read'])]
     #[Assert\Regex(
-        // On a ajouté \s? juste avant le [1-9]
         pattern: '/^(\+33|0)\s?[1-9](\s?\d{2}){4}$/',
         message: 'Le format du numéro de téléphone est invalide (ex: 0612345678, +33612345678 ou +33 6 12 34 56 78).'
     )]

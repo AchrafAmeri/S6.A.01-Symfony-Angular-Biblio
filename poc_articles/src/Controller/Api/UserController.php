@@ -23,8 +23,9 @@ class UserController extends AbstractController
     }
 
     #[Route('/user/me', name: 'api_user_me_update', methods: ['PUT'])]
-    public function updateMe(Request $request, EntityManagerInterface $em): JsonResponse
+    public function updateMe(Request $request, EntityManagerInterface $em, \App\Repository\UtilisateurRepository $userRepo): JsonResponse
     {
+        /** @var \App\Entity\Utilisateur $user */
         $user = $this->getUser();
 
         if (!$user) {
@@ -35,6 +36,19 @@ class UserController extends AbstractController
 
         if ($data === null) {
             return $this->json(['error' => 'Données JSON invalides.'], 400);
+        }
+
+        // --- NOUVEAU : GESTION DE L'EMAIL ---
+        if (isset($data['email']) && $data['email'] !== $user->getEmail()) {
+            // On vérifie si un autre utilisateur possède déjà cet email
+            $existingUser = $userRepo->findOneBy(['email' => $data['email']]);
+            
+            if ($existingUser) {
+                // On renvoie une erreur 409 (Conflit) pour qu'Angular sache exactement ce qui cloche
+                return $this->json(['error' => 'Cet email est déjà utilisé par un autre compte.'], 409);
+            }
+            
+            $user->setEmail($data['email']);
         }
 
         if (isset($data['adressePostale'])) {

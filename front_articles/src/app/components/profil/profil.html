@@ -1,7 +1,7 @@
 <div class="container mt-4">
   <div class="card bg-light mb-4 border-0 shadow-sm">
     <div class="card-body">
-      <h2>👤 Mon Espace Adhérent</h2>
+      <h2>Mon Espace Adhérent</h2>
       <p class="text-muted">Bienvenue, <strong>{{ authService.userEmail() }}</strong></p>
     </div>
   </div>
@@ -14,23 +14,22 @@
       <h4 class="mt-3 text-muted">Récupération de vos informations...</h4>
     </div>
   } @else {
-    <!-- Formulaire d'édition du profil -->
     @if (user()) {
       <div class="card shadow-sm mb-4">
-        <div class="card-header bg-info text-white"><h5 class="mb-0">📝 Modifier mon profil</h5></div>
+        <div class="card-header bg-info text-white"><h5 class="mb-0">Modifier mon profil</h5></div>
         <div class="card-body">
-          @if (successMessage) {
-            <div class="alert alert-success">{{ successMessage }}</div>
+          @if (successMessage()) {
+            <div class="alert alert-success">{{ successMessage() }}</div>
           }
-          @if (errorMessageProfil) {
-            <div class="alert alert-danger">{{ errorMessageProfil }}</div>
+          @if (errorMessageProfil()) {
+            <div class="alert alert-danger">{{ errorMessageProfil() }}</div>
           }
           <form (ngSubmit)="onSaveProfil()">
             <div class="row">
               <div class="col-md-6 mb-3">
                 <label for="email" class="form-label">Email</label>
                 <input type="email" class="form-control" id="email"
-                       [value]="user()!.email" disabled>
+                       [(ngModel)]="email" name="email">
               </div>
               <div class="col-md-3 mb-3">
                 <label for="nom" class="form-label">Nom</label>
