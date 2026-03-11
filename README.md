@@ -55,7 +55,7 @@ Compilez le projet en utilisant `npx` (pour forcer l'utilisation de la version l
 *(Copiez ensuite tout le contenu du dossier `dist/front_articles/browser` généré vers le dossier `public/app/` du projet Symfony)*.
 
 En cas de problème avec l'installation, référez-vous au document ci-dessous :  
-[Guide d'installation complet](https://github.com/AchrafAmeri/S6.A.01-Symfony-Angular-Biblio/blob/main/guide%20installation.htm)
+[Guide d'installation complet](https://htmlpreview.github.io/?https://github.com/AchrafAmeri/S6.A.01-Symfony-Angular-Biblio/blob/main/guide%20installation.html)
 
 ## Lancement
 

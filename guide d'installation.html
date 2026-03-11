@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>1-environnement.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+<link rel="stylesheet" href="file:///d%3A//_Formation//_vscode//style-markdown-fp.css" type="text/css">
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<p><em>SAE S6 - 2026</em></p>
+<h1 id="%C3%A9tape-1--environnement-de-d%C3%A9veloppement">Étape 1 : Environnement de Développement</h1>
+<p>À cette étape, nous allons valider l'installation des outils de développement, initialiser le projet et notre espace de travail.</p>
+<blockquote>
+<p><strong>⚠️ Ce guide est rédigé pour Windows</strong>, qui est l'environnement des PC de l'IUT. La version portable de MariaDB fournie sur Moodle est également une version Windows.<br>
+Si vous travaillez sous <strong>Linux ou macOS</strong>, vous devrez installer par vos propres moyens PHP 8.4, Symfony CLI 5.16, Node.js 22, VSCode et un serveur MariaDB (ou MySQL) avec des versions compatibles. Les étapes du POC resteront les mêmes.</p>
+</blockquote>
+<p><strong>Attention</strong> : avec les logiciels que nous listons ci-après, nous allons naturellement créer des projets Symfony 7.4 et Angular 21. Si vous installez des versions plus récentes, vous pourrez très probablement suivre les étapes du POC (<em>Proof Of Concept</em>), mais quand vous commencerez le projet, nous vous conseillons très fortement de vérifier dès le début que chaque membre de l'équipe peut bien exécuter tout le projet sur son propre PC (ou sur celui de l'IUT). <em>On trouve très facilement en ligne les variantes des lignes de commande de création de projet qui imposent la version à utiliser (Symfony 7.4 et Angular 21 par exemple).</em></p>
+<hr>
+<h3 id="sommaire">Sommaire</h3>
+<ol>
+<li><a href="#1-sur-un-pc-de-liut">Sur un PC de l'IUT</a> — Configuration rapide (tout est déjà installé)</li>
+<li><a href="#2-sur-votre-propre-pc">Sur votre propre PC</a> — Installation complète</li>
+<li><a href="#3-suite-commune--espace-de-travail-et-projet">Suite commune</a> — Espace de travail, MariaDB, projet Symfony, Adminer</li>
+</ol>
+<hr>
+<h2 id="1-sur-un-pc-de-liut">1. Sur un PC de l'IUT</h2>
+<p>Sur les PC de l'IUT, <strong>PHP, Node.js et VSCode sont déjà installés</strong>. Il reste cependant à finaliser la configuration de PHP (extensions, <code>php.ini</code>) et à installer Symfony CLI. Nous avons préparé un script qui fait tout cela pour vous.</p>
+<h3 id="proc%C3%A9dure">Procédure</h3>
+<ol>
+<li>Téléchargez <code>configSAEIUT.zip</code> depuis Moodle.</li>
+<li>Décompressez l'archive.</li>
+<li>Exécutez <code>configSAEIUT\configPHPIUT.bat</code>.</li>
+</ol>
+<p>Ce script va :</p>
+<ul>
+<li>Copier le bon <code>php.ini</code> (avec les extensions activées) dans le répertoire de PHP.</li>
+<li>Copier <code>symfony.exe</code> dans le répertoire de PHP (qui est dans le <code>PATH</code>).</li>
+<li>Exécuter une série de vérifications pour confirmer que tout est en ordre.</li>
+</ul>
+<p><strong>⚠️ Ce script doit être exécuté au début de chaque séance</strong> (la configuration de PHP est réinitialisée après chaque redémarrage du PC de l'IUT).</p>
+<h3 id="v%C3%A9rifier-que-tout-a-fonctionn%C3%A9">Vérifier que tout a fonctionné</h3>
+<p>Le script affiche les résultats de 3 commandes de test. Vérifiez que vous obtenez bien :</p>
+<ul>
+<li>
+<p><code>php testinstall.php</code> → version PHP 8.4 et toutes les extensions <code>[OK]</code></p>
+</li>
+<li>
+<p><code>php composer.phar --version</code> → Composer 2.9</p>
+</li>
+<li>
+<p><code>symfony version</code> → Symfony CLI 5.16</p>
+</li>
+<li>
+<p>Pour vérifiez l'installation opérationnelle de Symfony : <strong><code>symfony check:requirements</code>.</strong></p>
+</li>
+</ul>
+<p><strong>Si l'une de ces vérifications échoue, ne continuez pas</strong> — demandez de l'aide.</p>
+<h3 id="r%C3%A9cup%C3%A9rer-composerphar">Récupérer <code>composer.phar</code></h3>
+<p>Le fichier <code>composer.phar</code> se trouve dans le répertoire <code>configSAEIUT\</code>. Vous devrez le <strong>copier à la racine de votre espace de travail</strong> avant de créer le projet Symfony (cf. <a href="#3-suite-commune--espace-de-travail-et-projet">Suite commune</a>).</p>
+<p>➡️ <strong>Passez directement à la <a href="#3-suite-commune--espace-de-travail-et-projet">Suite commune</a>.</strong></p>
+<hr>
+<h2 id="2-sur-votre-propre-pc">2. Sur votre propre PC</h2>
+<p>Sur votre PC personnel, il faut installer chaque outil. Les sections suivantes détaillent la procédure pour Windows.</p>
+<h3 id="21-php-84">2.1 PHP 8.4</h3>
+<ul>
+<li>Téléchargez et installez PHP 8.4 depuis le site officiel : <a href="https://www.php.net/downloads">https://www.php.net/downloads</a>.
+<ul>
+<li>Le plus simple est de télécharger l'archive ZIP correspondant à votre système.</li>
+<li>Décompressez le zip et placez le répertoire à un <em>bon</em> endroit pour un logiciel que vous allez utiliser pour plusieurs projets :
+<ul>
+<li>Pas sur votre bureau, pas non plus dans un répertoire &quot;TP1&quot;.</li>
+<li>Par exemple, sur les PC de l'IUT, PHP a été installé (décompressé) dans <code>C:\Program Files\PHP</code>.</li>
+</ul>
+</li>
+<li>Ajoutez le chemin d'accès dans votre <code>PATH</code>.</li>
+</ul>
+</li>
+<li>Vérifiez l'installation en ouvrant une invite de commande et en tapant : <code>php -v</code>.
+<ul>
+<li>Notre version : <code>PHP 8.4</code>.</li>
+<li>Il est possible que votre ordinateur n'ait pas les DLL MS C++ redistribuables installées.</li>
+<li>Si c'est le cas, téléchargez-les et installez-les depuis le site officiel de Microsoft.</li>
+<li>Cf. <a href="https://www.google.com/search?q=ms+c%2B%2B+redistributable">Google : MS C++ Redistributable</a>.</li>
+</ul>
+</li>
+<li>Il faut également personnaliser le fichier de configuration (<code>php.ini</code>) :
+<ul>
+<li>Il se trouve dans le répertoire de PHP.</li>
+<li>S'il n'y en a pas, vous pouvez renommer <code>php.ini-development</code> en <code>php.ini</code>.</li>
+<li>Il faut le modifier pour activer un certain nombre d'extensions.</li>
+<li>Pour Windows, il suffit de décommenter les lignes suivantes :</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-comment">; À activer dans php.ini</span>
+<span class="hljs-attr">extension_dir</span> = <span class="hljs-string">"ext"</span>
+
+<span class="hljs-attr">extension</span>=curl
+<span class="hljs-attr">extension</span>=fileinfo
+<span class="hljs-attr">extension</span>=intl
+<span class="hljs-attr">extension</span>=mbstring
+<span class="hljs-attr">extension</span>=openssl
+<span class="hljs-attr">extension</span>=sodium      <span class="hljs-comment">; calcul de clé de hachage</span>
+
+<span class="hljs-attr">extension</span>=mysqli      <span class="hljs-comment">; MySQLi (connexion MySQL native)</span>
+<span class="hljs-attr">extension</span>=pdo_mysql   <span class="hljs-comment">; MySQL avec PDO</span>
+<span class="hljs-attr">extension</span>=pdo_sqlite  <span class="hljs-comment">; SQLite avec PDO</span>
+</div></code></pre>
+</li>
+</ul>
+<h3 id="22-symfony-cli">2.2 Symfony CLI</h3>
+<ul>
+<li>Installez Symfony :
+<ul>
+<li>Le plus simple est de télécharger le <strong>binaire</strong> pour votre PC.
+<ul>
+<li>Cf. <a href="https://symfony.com/download">https://symfony.com/download</a>.</li>
+<li>Il y a une version 386 et une version amd64 (en fonction de votre PC).</li>
+<li>C'est un zip qui contient l'exécutable <code>symfony.exe</code>.</li>
+</ul>
+</li>
+<li>Il suffit de le copier dans le répertoire de PHP (qui est déjà dans le <code>PATH</code>).</li>
+<li><em>Mais vous pouvez bien entendu également suivre les instructions sur le site officiel :</em> <a href="https://symfony.com/download">https://symfony.com/download</a>.</li>
+</ul>
+</li>
+<li>Vérifiez l'installation avec la commande : <code>symfony check:requirements</code>.</li>
+<li>Vérifiez la version avec la commande : <code>symfony version</code>.
+<ul>
+<li>Notre version : <code>Symfony CLI 5.16</code>.</li>
+</ul>
+</li>
+</ul>
+<h3 id="23-nodejs-et-npm">2.3 Node.js et npm</h3>
+<ul>
+<li>Téléchargez et installez Node.js <strong>22</strong> depuis le site officiel : <a href="https://nodejs.org/en/download/">https://nodejs.org/en/download/</a>.</li>
+<li><code>npm</code> est inclus avec Node.js. Vérifiez l'installation avec les commandes :<pre class="hljs"><code><div>node -v
+npm -v
+</div></code></pre>
+<ul>
+<li>Nos versions : <code>Node 22</code> et <code>npm 11</code>.</li>
+</ul>
+</li>
+</ul>
+<h4 id="compatibilit%C3%A9-angular-et-nodejs">Compatibilité Angular et Node.js</h4>
+<ul>
+<li>Il est courant que la dernière version de Node.js ne soit pas compatible avec Angular.
+<ul>
+<li>Cf. <a href="https://angular.dev/reference/versions">https://angular.dev/reference/versions</a>.</li>
+</ul>
+</li>
+<li>Pour gérer les versions de Node.js, le plus simple est d'utiliser <strong>nvm</strong> (<em>Node Version Manager</em>). Il existe une version Windows :
+<ul>
+<li><a href="https://github.com/coreybutler/nvm-windows/releases">https://github.com/coreybutler/nvm-windows/releases</a>.</li>
+</ul>
+</li>
+<li>Pour utiliser <code>nvm</code> :<pre class="hljs"><code><div>nvm list            <span class="hljs-comment"># Liste les versions installées</span>
+nvm install 22      <span class="hljs-comment"># Installe la dernière version 22</span>
+nvm use 22          <span class="hljs-comment"># Utilise la dernière version 22</span>
+</div></code></pre>
+</li>
+</ul>
+<h3 id="24-angular-cli-installation-locale">2.4 Angular CLI (installation locale)</h3>
+<ul>
+<li><strong>Nous n'installons pas Angular CLI globalement.</strong> Nous l'utiliserons localement via <code>npx</code>.</li>
+<li>Pour créer le projet Angular (à l'étape 5), nous utiliserons :<pre class="hljs"><code><div>npx -p @angular/cli@21 ng new front_articles ...
+</div></code></pre>
+</li>
+<li>Ensuite, depuis le répertoire du projet Angular, les commandes Angular CLI s'exécutent avec :<pre class="hljs"><code><div>npx ng serve
+npx ng generate component mon-composant
+</div></code></pre>
+</li>
+<li>Si vous avez une ancienne version d'Angular CLI installée globalement, nous vous conseillons de la désinstaller pour éviter les conflits :<pre class="hljs"><code><div>npm uninstall -g @angular/cli
+</div></code></pre>
+</li>
+</ul>
+<h3 id="25-vscode">2.5 VSCode</h3>
+<ul>
+<li>Installez <strong>VSCode</strong> (si ce n'est déjà fait).</li>
+<li>Installez les extensions suivantes :
+<ul>
+<li><strong>Angular Essentials</strong> <em>de John Papa</em>.</li>
+<li><strong>PHP Intelephense</strong> <em>de Ben Mewburn</em>.</li>
+<li><strong>PHP Namespace Resolver</strong> <em>de Mehedi Hassan</em>.</li>
+<li><strong>Symfony for VSCode</strong> <em>de TheNouiller</em>.</li>
+<li><strong>Twig Language 2</strong>.</li>
+<li>Vérifiez également qu'<strong>Emmet</strong> est associé aux fichiers Twig (c'est pratique) :
+<ul>
+<li>Allez dans : <strong>Fichier / Préférences / Paramètres / Extensions / Emmet</strong>.</li>
+<li>Dans <em>Include Languages</em>, ajoutez l'élément <code>&quot;twig&quot;: &quot;html&quot;</code>.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="26-v%C3%A9rifier-votre-installation">2.6 Vérifier votre installation</h3>
+<p>Pour valider rapidement votre configuration, téléchargez <code>configSAEIUT.zip</code> depuis Moodle, décompressez-le et exécutez les 3 commandes de test suivantes depuis le répertoire <code>configSAEIUT\</code> :</p>
+<pre class="hljs"><code><div>php testinstall.php
+php composer.phar --version
+symfony version
+</div></code></pre>
+<p>Vous devez obtenir :</p>
+<ul>
+<li>PHP 8.4 avec toutes les extensions <code>[OK]</code></li>
+<li>Composer 2.9</li>
+<li>Symfony CLI 5.16</li>
+</ul>
+<h3 id="r%C3%A9cup%C3%A9rer-composerphar">Récupérer <code>composer.phar</code></h3>
+<p>Le fichier <code>composer.phar</code> se trouve dans le répertoire <code>configSAEIUT\</code>. Vous devrez le <strong>copier à la racine de votre espace de travail</strong> avant de créer le projet Symfony (cf. section suivante).</p>
+<hr>
+<h2 id="3-suite-commune--espace-de-travail-et-projet">3. Suite commune : Espace de travail et projet</h2>
+<p><em>Que vous soyez sur un PC de l'IUT ou sur votre propre PC, la suite est identique.</em></p>
+<h3 id="31-espace-de-travail">3.1 Espace de travail</h3>
+<ul>
+<li>Créez un répertoire pour notre projet (ex : <code>sae-s6-poc</code>).</li>
+<li>Lancez <strong>VSCode</strong> dans ce répertoire.</li>
+<li>Vous y placerez :
+<ul>
+<li><code>composer.phar</code> — <strong>copiez-le maintenant</strong> depuis <code>configSAEIUT\</code>.</li>
+<li>Le projet Symfony (créé ci-après).</li>
+<li>Le projet Angular (créé à l'étape 5).</li>
+<li>La version portable de MariaDB.</li>
+<li>Etc. (<em>pour avoir tout sous la main</em>).</li>
+</ul>
+</li>
+<li>Vérifiez que <code>composer.phar</code> fonctionne depuis la racine :<pre class="hljs"><code><div>php composer.phar --version
+</div></code></pre>
+</li>
+<li><strong>Important</strong> : par la suite, toutes les commandes <code>composer</code> seront exécutées ainsi :<pre class="hljs"><code><div><span class="hljs-comment"># Depuis le répertoire de travail :</span>
+php composer.phar require xxx
+
+<span class="hljs-comment"># Depuis le répertoire du projet Symfony (poc_articles/) :</span>
+php ../composer.phar require xxx
+</div></code></pre>
+</li>
+</ul>
+<h3 id="32-mariadb">3.2 MariaDB</h3>
+<ul>
+<li>Décompressez la version portable de MariaDB (<em>à télécharger sur Moodle</em>).</li>
+<li>Exécutez <code>start-server.bat</code> pour démarrer le serveur MariaDB.
+<ul>
+<li>Pas besoin de modifier votre firewall : nous n'avons pas prévu d'accéder à MariaDB depuis une autre machine, seul Symfony l'utilisera en local.</li>
+<li>Laissez la fenêtre de commande ouverte pendant le fonctionnement du serveur.</li>
+<li>Tapez <code>Ctrl + C</code> dans cette fenêtre pour couper le serveur (<em>en fin de séance</em>).</li>
+</ul>
+</li>
+</ul>
+<h3 id="33-projet-symfony">3.3 Projet Symfony</h3>
+<ul>
+<li>Créez un nouveau projet Symfony <strong>7.4</strong> avec la commande :<pre class="hljs"><code><div>symfony new poc_articles --version=<span class="hljs-string">"7.4"</span>
+</div></code></pre>
+</li>
+<li>Placez-vous dans le répertoire du projet :<pre class="hljs"><code><div><span class="hljs-built_in">cd</span> poc_articles
+</div></code></pre>
+</li>
+<li>Installez le bundle Doctrine avec la commande :<pre class="hljs"><code><div>php ../composer.phar require doctrine
+</div></code></pre>
+<ul>
+<li><em>NB : nous utilisons <code>../composer.phar</code> car <code>composer.phar</code> est dans le répertoire parent.</em></li>
+<li>Lors de l'installation, Symfony Flex vous demandera si vous voulez inclure la configuration Docker : répondez <strong>n</strong> (non).</li>
+</ul>
+</li>
+<li>Ouvrez le fichier <code>.env</code> situé à la racine du projet avec un éditeur de texte.</li>
+<li>Modifiez la ligne <code>DATABASE_URL</code> pour notre configuration :<pre class="hljs"><code><div>DATABASE_URL="mysql://root:root@127.0.0.1:3306/saepoc?serverVersion=10.8.3-MariaDB&amp;charset=utf8mb4"
+</div></code></pre>
+<ul>
+<li><strong>NB</strong> : Avec cette ligne, nous venons de choisir <strong>saepoc</strong> comme nom de base de données, il ne faudra pas oublier de la créer avec Adminer.</li>
+</ul>
+</li>
+<li>Installez HTTPS (si ce n'est déjà fait) :<pre class="hljs"><code><div>symfony server:ca:install
+</div></code></pre>
+</li>
+<li>Lancez le serveur local Symfony :<pre class="hljs"><code><div>symfony server:start --port=8008
+</div></code></pre>
+<ul>
+<li>Vous pouvez voir la page d'accueil par défaut à l'adresse :
+<ul>
+<li><a href="https://127.0.0.1:8008/">https://127.0.0.1:8008/</a>.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="34-configuration-dadminer">3.4 Configuration d'Adminer</h3>
+<ul>
+<li>Décompressez <strong>Adminer</strong> (<em>à télécharger sur Moodle</em>).</li>
+<li>Placez le répertoire <code>adminer</code> dans le répertoire <code>public</code> du projet Symfony.</li>
+<li>Accédez à Adminer via l'URL :
+<ul>
+<li><code>https://127.0.0.1:8008/adminer/</code> dans le navigateur.</li>
+<li>Utilisateur : <code>root</code></li>
+<li>Mot de passe : <code>root</code></li>
+<li><strong>C'est le bon moment pour créer la base <code>saepoc</code></strong>.</li>
+<li><em>Vous pouvez aussi créer la base en ligne de commande :</em><pre class="hljs"><code><div>php bin/console doctrine:database:create
+</div></code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="35-tester-la-console-du-projet-symfony">3.5 Tester la console du projet Symfony</h3>
+<ul>
+<li>Ouvrez un nouveau terminal ou fermez le serveur Symfony (<code>Ctrl + C</code>).</li>
+<li>Placez-vous dans le répertoire de Symfony :<pre class="hljs"><code><div><span class="hljs-built_in">cd</span> poc_articles
+</div></code></pre>
+</li>
+<li>Testez la connexion à la base de données en exécutant :<pre class="hljs"><code><div>php bin/console doctrine:migrations:migrate
+</div></code></pre>
+<ul>
+<li>Si Doctrine indique qu'il n'y a pas de migration enregistrée : <strong>tout est OK</strong>, cela confirme que la connexion à la base fonctionne.</li>
+<li>Sinon, vérifiez :
+<ul>
+<li>Doctrine installé ?</li>
+<li>Le driver MySQL activé dans <code>php.ini</code> ?</li>
+<li>MariaDB est-il lancé ?</li>
+<li>La base de données <code>saepoc</code> existe-t-elle ?</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</body>
+</html>
