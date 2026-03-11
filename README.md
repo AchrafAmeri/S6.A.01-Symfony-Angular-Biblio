@@ -25,15 +25,7 @@ L'application se compose de deux dossiers principaux :
 
 ## Installation
 
-### 1. Base de données (MariaDB Portable)
-1. Lancez le serveur MariaDB portable via le script `start-server.bat`.
-2. Créez la base de données `saepoc` si elle existe pas :  
-Via Adminer ou en ligne de commande avec  
-`php bin/console doctrine:database:create`
-3. Importez les données de test (fixtures de recette) :  
-`mysql -u root -p -P 3306 saepoc < dump_recette.sql`
-
-### 2. Back-end (Symfony)
+### 1. Back-end (Symfony)
 Placez-vous dans le dossier du projet Symfony.
 Installez les dépendances en utilisant l'exécutable local de composer (adaptez le chemin si nécessaire) :  
 `php ../composer.phar install`
@@ -43,6 +35,14 @@ Générez les clés de sécurité pour JWT si elles existent pas :
 
 *Vérifiez que votre fichier `.env` contient bien une clé `APP_SECRET` valide et la connexion DB suivante :*  
 `DATABASE_URL="mysql://root:root@127.0.0.1:3306/saepoc?serverVersion=10.8.3-MariaDB&charset=utf8mb4"`
+
+### 2. Base de données (MariaDB Portable)
+1. Lancez le serveur MariaDB portable via le script `start-server.bat`.
+2. Créez la base de données `saepoc` si elle existe pas :  
+Via Adminer ou en ligne de commande avec  
+`php bin/console doctrine:database:create`
+3. Importez les données de test (fixtures de recette) :  
+`mysql -u root -p -P 3306 saepoc < dump_recette.sql`
 
 ### 3. Front-end (Angular)
 Placez-vous dans le dossier du projet Angular.
