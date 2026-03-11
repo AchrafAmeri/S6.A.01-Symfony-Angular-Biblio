@@ -17,11 +17,11 @@ L'application se compose de deux dossiers principaux :
 
 ## L'équipe de développement
 
-* [Mohammed Ameri](https://github.com/lien-github-1) - Chef de projet / Développeur
+* [Mohammed Ameri](https://github.com/AchrafAmeri) - Chef de projet / Développeur
 
-* [Pierre-Louis Ducry](https://github.com/lien-github-2) - Développeur / Tigre
+* [Pierre-Louis Ducry](https://github.com/Ducry-PL) - Développeur / Tigre
 
-* [Daved Tran](https://github.com/lien-github-3) - Développeur / Testeur
+* [Daved Tran](https://github.com/DavidTRANMinhAnh) - Développeur / Testeur
 
 ## Installation
 
@@ -54,6 +54,8 @@ Compilez le projet en utilisant `npx` (pour forcer l'utilisation de la version l
 
 *(Copiez ensuite tout le contenu du dossier `dist/front_articles/browser` généré vers le dossier `public/app/` du projet Symfony)*.
 
+En cas de problème avec l'installation, référez-vous au document ci-dessous :  
+[Guide d'installation complet](https://github.com/AchrafAmeri/S6.A.01-Symfony-Angular-Biblio/blob/main/guide%20installation.htm)
 
 ## Lancement
 
