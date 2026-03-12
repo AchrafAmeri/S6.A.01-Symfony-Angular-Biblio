@@ -19,132 +19,11 @@ BUT Informatique 3e année — 2025/2026
 
 ### 1.1 Schéma global
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                     Navigateur utilisateur                      │
-│                                                                 │
-│  ┌──────────────────────────────┐   ┌────────────────────────┐  │
-│  │  Front-office Angular 21     │   │  Back-office EasyAdmin  │  │
-│  │  http://localhost:4200        │   │  https://localhost:8008 │  │
-│  │                              │   │  /admin                 │  │
-│  │  - Catalogue livres          │   │                        │  │
-│  │  - Espace adhérent           │   │  - Gestion CRUD        │  │
-│  │  - Réservation               │   │  - Emprunts/Retours    │  │
-│  │  - Authentification JWT      │   │  - Statistiques        │  │
-│  └──────────────┬───────────────┘   └──────────┬─────────────┘  │
-└─────────────────┼────────────────────────────────┼───────────────┘
-                  │ HTTP/JSON (JWT Bearer)          │ HTTP/Session
-                  │ CORS (NelmioCorsBundle)         │ (cookie)
-                  ▼                                 ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                  Back-end Symfony 7.4 (PHP 8.2)                 │
-│                  https://localhost:8008                          │
-│                                                                 │
-│  ┌──────────────────────────────────────────────────────────┐   │
-│  │  API REST  /api/*                                        │   │
-│  │  - /api/login_check  (JWT)   - /api/livres              │   │
-│  │  - /api/register             - /api/auteurs             │   │
-│  │  - /api/user/me              - /api/categories          │   │
-│  │  - /api/reservations/{id}    - /api/mes-emprunts        │   │
-│  │  - /api/admin/stats          - /api/mes-reservations    │   │
-│  └──────────────────────────────────────────────────────────┘   │
-│                                                                 │
-│  ┌──────────────────────────────────────────────────────────┐   │
-│  │  Firewall Symfony Security                               │   │
-│  │  - Firewall "login" → json_login → JWT success handler  │   │
-│  │  - Firewall "api"   → stateless JWT  (LexikJWT)         │   │
-│  │  - Firewall "main"  → session cookie (EasyAdmin)        │   │
-│  └──────────────────────────────────────────────────────────┘   │
-│                                                                 │
-│  ┌──────────────────────────────────────────────────────────┐   │
-│  │  Pont SSO (SsoController)                                │   │
-│  │  Angular → /sso/to-symfony?token=<JWT>                  │   │
-│  │  Symfony → /sso/to-angular → redirect ?token=<JWT>      │   │
-│  └──────────────────────────────────────────────────────────┘   │
-└──────────────────────────────┬──────────────────────────────────┘
-                               │ Doctrine ORM
-                               ▼
-┌─────────────────────────────────────────────────────────────────┐
-│  Base de données MariaDB 10.8 (port 3306)                       │
-│  Base : saepoc                                                  │
-│                                                                 │
-│  livre  ──── auteur (ManyToMany)                                │
-│  livre  ──── categorie (ManyToMany)                             │
-│  livre  ──── emprunt (OneToMany)                                │
-│  livre  ──── reservations (OneToMany)                           │
-│  utilisateur ──── emprunt (OneToMany)                           │
-│  utilisateur ──── reservations (OneToMany)                      │
-└─────────────────────────────────────────────────────────────────┘
-```
+![test-1](captures/doctechnique/im2.png)
 
 ### 1.2 Diagramme de classes
 
-```
-┌─────────────────────────────────────┐
-│  Livre                              │
-├─────────────────────────────────────┤
-│ - id: int                           │
-│ - titre: string                     │
-│ - dateSortie: DateTime|null         │
-│ - langue: string                    │
-│ - photoCouverture: string|null      │
-├─────────────────────────────────────┤
-│ + getAuteurs(): Collection          │
-│ + getCategories(): Collection       │
-│ + getEmprunts(): Collection         │
-│ + getReservations(): Collection     │
-└─────────────────────────────────────┘
-         │ ManyToMany            │ ManyToMany
-         ▼                       ▼
-┌──────────────────┐    ┌─────────────────┐
-│  Auteur          │    │  Categorie      │
-├──────────────────┤    ├─────────────────┤
-│ - id: int        │    │ - id: int       │
-│ - nom: string    │    │ - nom: string   │
-│ - prenom: string │    │ - description   │
-│ - dateNaissance  │    │   : text|null   │
-│ - dateDeces      │    └─────────────────┘
-│ - nationalite    │
-│ - photo          │
-│ - description    │
-└──────────────────┘
-
-┌─────────────────────────────────────────────────────────┐
-│  Utilisateur (implements UserInterface)                 │
-├─────────────────────────────────────────────────────────┤
-│ - id: int                                               │
-│ - email: string (UNIQUE)                                │
-│ - roles: string[]  (ROLE_USER / ROLE_BIBLIO / ROLE_ADMIN│
-│ - password: string (hashé argon2id)                     │
-│ - nom: string|null                                      │
-│ - prenom: string|null                                   │
-│ - dateAdhesion: DateTime                                │
-│ - dateNaiss: DateTime|null                              │
-│ - adressePostale: string|null                           │
-│ - numTel: string|null                                   │
-│ - photo: string|null                                    │
-└─────────────────────────────────────────────────────────┘
-         │ OneToMany              │ OneToMany
-         ▼                        ▼
-┌──────────────────┐    ┌──────────────────────┐
-│  Emprunt         │    │  Reservations        │
-├──────────────────┤    ├──────────────────────┤
-│ - id: int        │    │ - id: int            │
-│ - dateEmprunt:   │    │ - dateResa:          │
-│   DateTime       │    │   DateTimeImmutable  │
-│ - dateRetour:    │    │ - utilisateur:       │
-│   DateTime|null  │    │   Utilisateur (FK)   │
-│ - utilisateur:   │    │ - livre: Livre (FK)  │
-│   Utilisateur(FK)│    ├──────────────────────┤
-│ - livre:         │    │ [#ReservationRules]  │
-│   Livre (FK)     │    │ max 3/utilisateur    │
-├──────────────────┤    │ livre non déjà réservé│
-│ [#EmpruntRules]  │    │ livre non emprunté   │
-│ max 5/utilisateur│    └──────────────────────┘
-│ livre disponible │
-│ retard > 15 jours│
-└──────────────────┘
-```
+![test-1](captures/doctechnique/image.png)
 
 ### 1.3 Structure des dossiers
 
@@ -311,7 +190,7 @@ npm -v
 ### Étape 1 — Récupérer le projet
 
 ```bash
-git clone <url-du-depot>
+git clone https://github.com/AchrafAmeri/S6.A.01-Symfony-Angular-Biblio.git
 cd S6.A.01-Symfony-Angular-Biblio
 ```
 
@@ -327,6 +206,9 @@ Vérifier que la base `saepoc` existe (accessible via Adminer sur `http://localh
 
 ```sql
 CREATE DATABASE saepoc CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE saepoc
+// Vérification
+SHOW TABLES;
 ```
 
 ---
@@ -385,10 +267,10 @@ php bin/console doctrine:migrations:migrate --no-interaction
 
 ---
 
-### Étape 7 — Charger les données de démonstration (optionnel)
+### Étape 7 — Installer HTTPS (si ce n'est pas déjà fait)
 
 ```bash
-php bin/console doctrine:fixtures:load --no-interaction
+symfony server:ca:install
 ```
 
 ---
@@ -449,7 +331,7 @@ Compte administrateur par défaut (créé par les fixtures) :
 
 | Champ | Valeur |
 |-------|--------|
-| Email | `admin@biblio.fr` |
+| Email | `admin@articles.fr` |
 | Mot de passe | `admin` |
 | Rôle | `ROLE_ADMIN` |
 
@@ -457,7 +339,11 @@ Compte administrateur par défaut (créé par les fixtures) :
 
 ## 4. Difficultés rencontrées et solutions apportées
 
-*(section à compléter)*
+Nous avons rencontrés plusieurs difficultés rencontrées lors de ce projet pour la pluspart d'entre nous : 
+
+- Mohammed : 
+- Pierre-Louis : 
+- David : Premières difficultés lors du paramètrage du projet sur sa machine personnelle (commande pas reconnu alors que tous les outils d'installer), et difficultés lors de l'intégration et la consommation de l'API REST dues à des notions encore fragiles sur la programmation asynchrone en TypeScript. La solution a été d'utiliser systématiquement `HttpClient` avec des `Observable` : chaque appel HTTP retourne un `Observable<T>` auquel le composant souscrit via `.subscribe()`, ce qui permet de traiter la réponse de manière asynchrone sans bloquer le thread principal.
 
 ---
 
