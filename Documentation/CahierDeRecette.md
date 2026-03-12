@@ -21,7 +21,7 @@
 | **Frontend** | Angular (standalone components) |
 | **Base de données** | MySQL/MariaDB |
 | **Serveur Backend** | http://localhost:8008 |
-| **Serveur Frontend** | http://localhost:4200 |
+| **Serveur Frontend** | http://localhost:8008/app |
 | **API** | REST JSON |
 
 ### 2.1 Utilisateurs de Test
@@ -61,10 +61,10 @@
 
 | # | Scénario | Prérequis | Actions | Résultat attendu | Rôle |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| 12 | Accès au dashboard bibliothécaire | Connecté avec biblio@articles.fr / biblio123 (ROLE_BIBLIO) | Saisir email + mot de passe, cliquer Connexion | Dashboard affiché avec statistiques (nb livres, adhérents, emprunts en cours, catégories), menu de navigation | Bibliothécaire |
+| 12 | Accès au dashboard bibliothécaire | Connecté avec biblio@articles.fr / biblio (ROLE_BIBLIO) | Saisir email + mot de passe, cliquer Connexion | Dashboard affiché avec statistiques (nb livres, adhérents, emprunts en cours, catégories), menu de navigation | Bibliothécaire |
 | 13 | Création d'un emprunt | Connexion ROLE_BIBLIO, adhérent et livre disponibles | Aller dans Emprunts → Ajouter, sélectionner adhérent + livre, enregistrer | Emprunt créé avec dateEmprunt = maintenant, dateRetour = null (en cours), visible dans liste des emprunts | Bibliothécaire |
 | 14 | Enregistrement du retour d'un livre | Emprunt en cours (dateRetour = null) | Accéder à Emprunts, modifier l'emprunt, renseigner date de retour, enregistrer | dateRetour mise à jour, emprunt marqué comme terminé, livre redevient disponible | Bibliothécaire |
-| 15 | Consultation des emprunts en retard | Emprunt avec dateEmprunt > 30 jours et dateRetour = null | Consulter la liste des emprunts | Badge rouge "Oui" affiché dans colonne "En retard ?" pour les emprunts dépassant 30 jours | Bibliothécaire |
+| 15 | Consultation des emprunts en retard | Emprunt avec dateEmprunt > 15 jours et dateRetour = null | Consulter la liste des emprunts | Badge rouge "Oui" affiché dans colonne "En retard ?" pour les emprunts dépassant 15 jours | Bibliothécaire |
 | 16 | Transformer réservation en emprunt | Avoir des réservations | Dans Réservations, cliquer "Transformer en emprunt" (bouton vert) | Emprunt créé avec même adhérent et livre, réservation supprimée, message de confirmation affiché | Bibliothécaire |
 | 17 | Export PDF d'un emprunt | Emprunt existant | Dans liste Emprunts, cliquer "Générer reçu PDF" | Fichier PDF téléchargé contenant nom adhérent, titre livre, dates d'emprunt et retour prévue | Bibliothécaire |
 
@@ -72,12 +72,11 @@
 
 | # | Scénario | Prérequis | Actions | Résultat attendu | Rôle |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| 18 | Création d'un nouveau livre | Connecté avec ROLE_BIBLIO, auteurs et catégories existants | Accéder à Livres → Ajouter, remplir titre, date sortie, langue, photo, sélectionner auteurs et catégories, enregistrer | Livre créé en base, message de confirmation, livre visible dans liste | Responsable/Bibliothécaire |
-| 19 | Modification d'un livre | Livre existant, connecté ROLE_BIBLIO | Accéder à Livres, cliquer Modifier sur livre choisi, changer titre, enregistrer | Livre mis à jour en base avec nouveau titre | Responsable/Bibliothécaire |
-| 20 | Suppression d'un livre | Livre sans emprunts ni réservations, ROLE_BIBLIO | Sélectionner un livre, cliquer Supprimer, confirmer | Livre supprimé de la base, message de confirmation | Responsable/Bibliothécaire |
-| 21 | Consultation statistiques globales | Connecté avec admin@articles.fr / admin (ROLE_ADMIN) | Accéder à dashboard admin ou envoyer GET `/api/admin/stats` avec token JWT | , JSON contenant totaux (livres, adhérents, emprunts en cours) + historique mensuel | Responsable |
-| 22 | Modification des rôles d'un adhérent | Connecté ROLE_ADMIN | Accéder à Adhérents, modifier un adhérent, ajouter ROLE_BIBLIO, enregistrer | Rôles mis à jour, adhérent hérite des permissions ROLE_BIBLIO + ROLE_USER | Responsable |
-| 23 | Interdiction d'accès admin pour ROLE_USER | Connecté avec adherent@articles.fr (ROLE_USER uniquement) | Tenter d'accéder à `/admin` | Redirection vers `/sso/to-angular` (Angular), pas d'accès au dashboard admin | Adhérent |
+| 18 | Création d'un nouveau livre | Connecté avec ROLE_ADMIN, auteurs et catégories existants | Accéder à Livres → Ajouter, remplir titre, date sortie, langue, photo, sélectionner auteurs et catégories, enregistrer | Livre créé en base, message de confirmation, livre visible dans liste | Responsable |
+| 19 | Modification d'un livre | Livre existant, connecté ROLE_ADMIN | Accéder à Livres, cliquer Modifier sur livre choisi, changer titre, enregistrer | Livre mis à jour en base avec nouveau titre | Responsable |
+| 20 | Suppression d'un livre | Livre sans emprunts ni réservations, ROLE_ADMIN | Sélectionner un livre, cliquer Supprimer, confirmer | Livre supprimé de la base, message de confirmation | Responsable |
+| 21 | Modification des rôles d'un adhérent | Connecté ROLE_ADMIN | Accéder à Adhérents, modifier un adhérent, ajouter ROLE_BIBLIO, enregistrer | Rôles mis à jour, adhérent hérite des permissions ROLE_BIBLIO + ROLE_USER | Responsable |
+| 22 | Interdiction d'accès admin pour ROLE_USER | Connecté avec adherent@articles.fr (ROLE_USER uniquement) | Tenter d'accéder à `/admin` | Redirection vers `/sso/to-angular` (Angular), pas d'accès au dashboard admin | Adhérent |
 
 ### 3.5 API REST (Requêtes Publiques et Protégées)
 
