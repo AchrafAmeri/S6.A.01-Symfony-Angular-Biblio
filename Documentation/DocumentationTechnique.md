@@ -79,7 +79,7 @@ mariadb-fp/                 MariaDB 10.8 portable (Windows)
 | Front-end | Angular | 21 |
 | CSS | Bootstrap 5 + Bootswatch | 5.3 |
 | Base de données | MariaDB | 10.8 |
-| PHP | — | >= 8.2 |
+| PHP | — |  8.4 |
 | Node.js | — | >= 22 |
 
 ### 2.2 Authentification double mécanisme
@@ -167,15 +167,60 @@ Installer les logiciels suivants :
 
 | Outil | Version minimale | Lien |
 |-------|-----------------|------|
-| PHP | 8.2 | https://windows.php.net/download/ |
+| PHP | 8.4 | https://windows.php.net/download/ |
 | Composer | 2.x | https://getcomposer.org/download/ |
 | Symfony CLI | dernière | https://symfony.com/download |
 | Node.js | 22 LTS | https://nodejs.org/ |
 | Git | — | https://git-scm.com/ |
 
+Si vous n'avez pas installer : PHP
+
+Télécharez et installez PHP 8.4 via le lien fourni
+
+- Décompressez le zip et placez le dans C:\Programme Files \PHP
+- Ajouter le chemin d'accès dans votre PATH 
+- Vérifiez l'installation en ouvrant une invite de commande et en tapant : php -v
+ - Il est possible que votre ordinateur n'ait pas les DLL MS C++ redistribuables installées.
+ - Si c'est le cas, téléchargez-les et installez-les depuis le site officiel de Microsoft.
+
+Il faudra aussi modifier le php.ini :
+
+- Si vous ne trouvez pas de php.ini dans le répertoire php, renommez php.ini-development en php.ini.
+- Il faudra par la suite le modifier afin d'activer un certain nombre d'extensions : 
+  - Pour Windows, il suffit de décommenter les lignes suivantes : 
+
+```
+; À activer dans php.ini
+extension_dir = "ext"
+
+extension=curl
+extension=fileinfo
+extension=intl
+extension=mbstring
+extension=openssl
+extension=sodium      ; calcul de clé de hachage
+
+extension=mysqli      ; MySQLi (connexion MySQL native)
+extension=pdo_mysql   ; MySQL avec PDO
+extension=pdo_sqlite  ; SQLite avec PDO
+```
+Pour symfony : 
+
+- Télécharger le binaire sur votre PC via le lien fourni.
+- En fonction de votre PC, vous avez le choix de télécharger une version 386 ou amd64
+- Le zip contient l'exécutable symfony.exe, copier le dans le répertoire PHP (qui est déjà dans le PATH)
+
+- Vérifiez l'installation avec la commande : symfony check:requirements.
+- Vérifiez la version avec la commande : symfony version.
+ - Notre version : Symfony CLI 5.16.
+
+Pour node et npm : 
+
+- Téléchargez et installez Node.js 22 depuis le site officiel. npm est inclus avec Node.js
+
 > MariaDB est fourni dans le dépôt (dossier `mariadb-fp/`), aucune installation séparée n'est requise.
 
-Vérifier les installations :
+Vérifier une nouvelles fois les installations :
 
 ```bash
 php -v
