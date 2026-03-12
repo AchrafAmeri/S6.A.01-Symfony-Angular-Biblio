@@ -386,8 +386,8 @@ Compte administrateur par défaut (créé par les fixtures) :
 
 Nous avons rencontrés plusieurs difficultés rencontrées lors de ce projet pour la pluspart d'entre nous : 
 
-- Mohammed : 
-- Pierre-Louis : 
+- Mohammed : Difficulté sur l'architecture hybride (Back-Office HTML/Twig + API REST JSON) sans dupliquer les règles métier. Solution : centraliser la logique métier dans des services Symfony appelés par les contrôleurs Web et API, afin de garantir des comportements identiques (ex: disponibilité d'un livre). Difficulté aussi sur les relations Doctrine (Livre/Auteur/Catégorie/Emprunt), avec risque de requêtes N+1 et de suppressions non maîtrisées. Solution : optimiser les lectures avec des jointures (`JOIN`/fetch join via QueryBuilder) et configurer les relations avec prudence (éviter `cascade: ["remove"]` sur des relations partagées comme ManyToMany, privilégier la dissociation des liens et des règles explicites de suppression).
+- Pierre-Louis : Difficulté sur la gestion des codes d'état HTTP dans l'API (éviter de renvoyer `200 OK` en cas d'erreur, ce qui induit le front en erreur). Solution : appliquer les codes standards selon le cas (`201 Created` après création, `400 Bad Request` pour des données invalides, `403 Forbidden` en cas d'accès refusé, `404 Not Found` si la ressource n'existe pas). Difficulté également sur la sécurisation stateless des routes API (sans session serveur). Solution : authentification par JWT ; le token est validé à chaque requête par le firewall API Symfony, ce qui permet d'authentifier l'adhérent sans session persistante côté serveur.
 - David : Premières difficultés lors du paramètrage du projet sur sa machine personnelle (commande pas reconnu alors que tous les outils d'installer), et difficultés lors de l'intégration et la consommation de l'API REST dues à des notions encore fragiles sur la programmation asynchrone en TypeScript. La solution a été d'utiliser systématiquement `HttpClient` avec des `Observable` : chaque appel HTTP retourne un `Observable<T>` auquel le composant souscrit via `.subscribe()`, ce qui permet de traiter la réponse de manière asynchrone sans bloquer le thread principal.
 
 ---
